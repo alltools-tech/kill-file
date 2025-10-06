@@ -30,5 +30,5 @@ ENV TESSERACT_LANG=eng+hin+ara+chi_sim+jpn+kor+fra+spa+rus
 ENV LANG=C.UTF-8
 ENV PYTHONIOENCODING=utf-8
 
-# ===== Start Worker ====
+# ===== Start Worker =====
 CMD ["python", "worker.py"]
