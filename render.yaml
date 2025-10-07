@@ -3,7 +3,7 @@ services:
     name: kill-file-api
     env: docker
     plan: starter
-    dockerfilePath: ./api/Dockerfile
+    dockerfilePath: ./docker/api.Dockerfile
     envVars:
       - key: REDIS_HOST
         value: redis
@@ -21,7 +21,7 @@ services:
     name: kill-file-worker
     env: docker
     plan: starter
-    dockerfilePath: ./worker/Dockerfile
+    dockerfilePath: ./docker/worker.Dockerfile
     envVars:
       - key: REDIS_HOST
         value: redis
