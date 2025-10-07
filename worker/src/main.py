@@ -7,7 +7,11 @@ def fetch_job(r):
     if job:
         job_data = json.loads(job[1].decode())
         print(f"Fetched job: {job_data}")
-        # TODO: process job_data (conversion logic here)
+        # Job processing simulation
+        job_id = job_data.get("jobId")
+        # Status update in Redis: job:<job_id> = processed
+        r.set(f"job:{job_id}", "processed")
+        print(f"Set status 'processed' for {job_id}")
     else:
         print("No job found...")
 
