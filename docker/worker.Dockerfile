@@ -1,6 +1,14 @@
+# Use official Python image
 FROM python:3.11-slim
+
 WORKDIR /app
-COPY ./worker/requirements.txt .
+
+# Copy requirements
+COPY ../worker/requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
-COPY ./worker/src ./src
+
+# Copy rest of worker code
+COPY ../worker .
+
+# Start command (change to your main file)
 CMD ["python", "src/main.py"]
