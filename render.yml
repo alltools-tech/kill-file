@@ -15,9 +15,7 @@ services:
         value: minioadmin
       - key: MINIO_BUCKET
         value: uploads
-      # Add your other ENV as needed
-    ports:
-      - 8080
+    port: 8080
 
   - type: worker
     name: kill-file-worker
@@ -35,6 +33,7 @@ services:
         value: minioadmin
       - key: MINIO_BUCKET
         value: uploads
+    # port: 8080  <-- YEH LINE HATA DO!
 
   - type: pserv
     name: minio
@@ -50,16 +49,14 @@ services:
       - name: miniodata
         mountPath: /data
         sizeGB: 10
-    ports:
-      - 9000
+    port: 9000
 
   - type: pserv
     name: redis
     env: docker
     plan: starter
     dockerfilePath: docker/redis.Dockerfile
-    ports:
-      - 6379
+    port: 6379
 
   - type: pserv
     name: postgres
@@ -77,5 +74,4 @@ services:
       - name: pgdata
         mountPath: /var/lib/postgresql/data
         sizeGB: 10
-    ports:
-      - 5432
+    port: 5432
