@@ -3,7 +3,7 @@ import Redis from 'ioredis';
 
 // Create a Redis client (adjust host/port if needed)
 const redis = new Redis({
-  host: process.env.REDIS_HOST || 'redis',
+  host: process.env.REDIS_HOST || 'redis', // 'redis' is the service name in docker-compose
   port: 6379,
 });
 
