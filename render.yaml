@@ -6,9 +6,9 @@ services:
     dockerfilePath: ./docker/api.Dockerfile
     envVars:
       - key: REDIS_HOST
-        value: redis
+        value: <your-redis-service-host>
       - key: MINIO_ENDPOINT
-        value: http://minio:9000
+        value: <your-minio-service-url>
       - key: MINIO_ROOT_USER
         value: minioadmin
       - key: MINIO_ROOT_PASSWORD
@@ -17,26 +17,19 @@ services:
         value: uploads
     port: 8080
 
-  - type: pserv
-    name: minio
+  - type: worker
+    name: kill-file-worker
     env: docker
     plan: starter
-    image: minio/minio:latest
-    startCommand: server /data
+    dockerfilePath: ./docker/worker.Dockerfile
     envVars:
+      - key: REDIS_HOST
+        value: <your-redis-service-host>
+      - key: MINIO_ENDPOINT
+        value: <your-minio-service-url>
       - key: MINIO_ROOT_USER
         value: minioadmin
       - key: MINIO_ROOT_PASSWORD
         value: minioadmin
-    disks:
-      - name: miniodata
-        mountPath: /data
-        sizeGB: 10
-    port: 9000
-
-  - type: pserv
-    name: redis
-    env: docker
-    plan: starter
-    image: redis:7
-    port: 6379
+      - key: MINIO_BUCKET
+        value: uploads
