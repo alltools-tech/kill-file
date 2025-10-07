@@ -17,23 +17,6 @@ services:
         value: uploads
     port: 8080
 
-  - type: worker
-    name: kill-file-worker
-    env: docker
-    plan: starter
-    dockerfilePath: ./docker/worker.Dockerfile
-    envVars:
-      - key: REDIS_HOST
-        value: redis
-      - key: MINIO_ENDPOINT
-        value: http://minio:9000
-      - key: MINIO_ROOT_USER
-        value: minioadmin
-      - key: MINIO_ROOT_PASSWORD
-        value: minioadmin
-      - key: MINIO_BUCKET
-        value: uploads
-
   - type: pserv
     name: minio
     env: docker
@@ -57,21 +40,3 @@ services:
     plan: starter
     image: redis:7
     port: 6379
-
-  - type: pserv
-    name: postgres
-    env: docker
-    plan: starter
-    image: postgres:14
-    envVars:
-      - key: POSTGRES_DB
-        value: killfile
-      - key: POSTGRES_USER
-        value: killuser
-      - key: POSTGRES_PASSWORD
-        value: killpassword
-    disks:
-      - name: pgdata
-        mountPath: /var/lib/postgresql/data
-        sizeGB: 10
-    port: 5432
