@@ -1,0 +1,29 @@
+# Kill File: .gitignore
+
+# Ignore node modules (if npm used)
+node_modules/
+# Ignore build folders
+dist/
+build/
+# Ignore OS files
+.DS_Store
+Thumbs.db
+# Ignore log files
+*.log
+# Ignore temp files
+*.tmp
+# Ignore coverage reports
+coverage/
+# Ignore IDE/project files
+.vscode/
+.idea/
+*.iml
+*.sublime-workspace
+*.sublime-project
+# Ignore hidden files
+.env
+# Ignore web-app/public/sample files
+web-app/public/samples/
+# Ignore Android build files (if ever used)
+android-app/build/
+android-app/app/build/
