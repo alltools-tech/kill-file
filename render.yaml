@@ -15,7 +15,6 @@ services:
         value: AJpQ3OSMTnT11Q8IFMXCv3SHDpb6oxEw
       - key: POSTGRES_PORT
         value: "5432"
-      # Add other needed env vars here
     port: 8080
 
   - type: worker
@@ -34,5 +33,3 @@ services:
         value: AJpQ3OSMTnT11Q8IFMXCv3SHDpb6oxEw
       - key: POSTGRES_PORT
         value: "5432"
-      # Add other needed env vars here
-    # port: 8080 ← YEH LINE NAHI HONI CHAHIYE!
