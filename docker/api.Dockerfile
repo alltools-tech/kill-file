@@ -1,8 +1,19 @@
-FROM node:20-alpine
+# Use official Node.js image
+FROM node:18-alpine
+
 WORKDIR /app
-COPY ./api/package.json ./
-COPY ./api/tsconfig.json ./
+
+# Copy package.json and package-lock.json
+COPY ../api/package*.json ./
+
+# Install dependencies
 RUN npm install
-COPY ./api/src ./src
+
+# Copy rest of API code
+COPY ../api .
+
+# Expose API port
 EXPOSE 8080
+
+# Start command
 CMD ["npm", "start"]
