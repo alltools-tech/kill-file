@@ -3,56 +3,83 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Kill File – Free Bulk File Converter & Compressor</title>
+  <title>Kill File – All-in-One Converter & Compressor</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <style>
-    body { background: #f2f2f2; }
-    .container { max-width: 600px; margin: 2rem auto; }
+    body { background: #f8f9fa; }
     .card { margin-bottom: 2rem; }
     .drop-zone {
       border: 2px dashed #007bff;
-      padding: 2rem;
+      border-radius: 8px;
+      background: #fff;
+      padding: 1rem;
       text-align: center;
       color: #007bff;
       cursor: pointer;
-      background: #fff;
+      transition: background 0.2s;
     }
-    .drop-zone.dragover {
-      background: #e3f2fd;
-    }
-    .file-list { margin-top: 1rem; }
-    .footer { text-align: center; font-size: 0.9em; color: #999; margin-top: 2rem; }
+    .drop-zone.dragover { background: #e3f2fd; }
+    .file-list { margin-top: 1rem; font-size: 0.95em; }
+    .compress-bar { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1rem; }
+    .spinner-border { display: none; margin-left: 0.5rem; }
+    .output-area { margin-top: 1rem; }
   </style>
 </head>
 <body>
-  <div class="container">
+  <div class="container py-3">
+
     <div class="text-center mb-4">
-      <img src="../assets/logo.png" alt="Kill File Logo" width="64" height="64" onerror="this.style.display='none'">
-      <h1>Kill File</h1>
-      <p class="lead">Free Bulk File Converter & Compressor<br><small>PDF, Images, Office docs – Fast & Mobile Friendly</small></p>
+      <h1 class="fw-bold">Kill File</h1>
+      <p class="lead">All-in-One Bulk File Converter & Compressor<br><span class="text-muted fs-6">PDF, Images, Office Docs – Free, Fast, Mobile Friendly</span></p>
     </div>
+
+    <!-- PDF to PDF/OCR Card -->
     <div class="card">
+      <div class="card-header bg-primary text-white fw-bold">PDF to PDF / OCR</div>
       <div class="card-body">
-        <div id="dropZone" class="drop-zone">
-          <span>Drag & drop files here, or <label for="fileInput" style="color:#007bff;cursor:pointer;">browse</label></span>
-          <input type="file" id="fileInput" multiple style="display:none;" accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.csv,.jpg,.jpeg,.png,.bmp,.tiff,.svg,.webp,.avif,.heic,.heif" />
+        <div id="pdf2pdfDrop" class="drop-zone">
+          <span>Drag & drop PDF files here or <label for="pdf2pdfInput" class="text-primary" style="cursor:pointer;">browse</label></span>
+          <input type="file" id="pdf2pdfInput" multiple accept=".pdf" style="display:none;">
         </div>
-        <div class="file-list" id="fileList"></div>
-        <hr>
-        <form id="optionsForm">
-          <div class="mb-3">
-            <label for="convType" class="form-label">Conversion Type</label>
-            <select id="convType" class="form-select">
-              <option value="pdf2pdf">PDF to PDF (Compress/OCR)</option>
-              <option value="pdf2img">PDF to Image</option>
-              <option value="img2pdf">Image to PDF</option>
-              <option value="office2pdf">Office to PDF</option>
-              <option value="img2img">Image to Image</option>
+        <div class="file-list" id="pdf2pdfList"></div>
+        <form id="pdf2pdfForm" class="mt-3">
+          <div class="compress-bar">
+            <label for="pdf2pdfQuality" class="form-label mb-0">Compression</label>
+            <input type="range" id="pdf2pdfQuality" min="10" max="100" value="80">
+            <span id="pdf2pdfQualityVal">80%</span>
+          </div>
+          <div class="mb-2">
+            <label for="pdf2pdfLang" class="form-label">OCR Language</label>
+            <select id="pdf2pdfLang" class="form-select">
+              <option value="none">No OCR</option>
+              <option value="eng">English</option>
+              <option value="hin">Hindi</option>
+              <option value="urd">Urdu</option>
+              <option value="guj">Gujarati</option>
+              <option value="ben">Bengali</option>
+              <option value="other">Other</option>
             </select>
           </div>
-          <div class="mb-3" id="formatOptions" style="display:none;">
-            <label for="outputFormat" class="form-label">Output Format</label>
-            <select id="outputFormat" class="form-select">
+          <button type="button" class="btn btn-primary w-100" id="pdf2pdfBtn">Convert & Compress</button>
+          <div class="spinner-border text-primary" role="status" id="pdf2pdfSpin"></div>
+        </form>
+        <div class="output-area" id="pdf2pdfOutput"></div>
+      </div>
+    </div>
+
+    <!-- PDF to Image Card -->
+    <div class="card">
+      <div class="card-header bg-success text-white fw-bold">PDF to Image</div>
+      <div class="card-body">
+        <div id="pdf2imgDrop" class="drop-zone">
+          <span>Drag & drop PDF files here or <label for="pdf2imgInput" class="text-success" style="cursor:pointer;">browse</label></span>
+          <input type="file" id="pdf2imgInput" multiple accept=".pdf" style="display:none;">
+        </div>
+        <div class="file-list" id="pdf2imgList"></div>
+        <form id="pdf2imgForm" class="mt-3">
+          <div class="mb-2">
+            <label for="pdf2imgFormat" class="form-label">To Image Format</label>
+            <select id="pdf2imgFormat" class="form-select">
               <option value="jpg">JPG</option>
               <option value="png">PNG</option>
               <option value="bmp">BMP</option>
@@ -64,9 +91,37 @@
               <option value="heif">HEIF</option>
             </select>
           </div>
-          <div class="mb-3">
-            <label for="langSelect" class="form-label">OCR Language (if applicable)</label>
-            <select id="langSelect" class="form-select">
+          <div class="compress-bar">
+            <label for="pdf2imgQuality" class="form-label mb-0">Compression</label>
+            <input type="range" id="pdf2imgQuality" min="10" max="100" value="80">
+            <span id="pdf2imgQualityVal">80%</span>
+          </div>
+          <button type="button" class="btn btn-success w-100" id="pdf2imgBtn">Convert & Compress</button>
+          <div class="spinner-border text-success" role="status" id="pdf2imgSpin"></div>
+        </form>
+        <div class="output-area" id="pdf2imgOutput"></div>
+      </div>
+    </div>
+
+    <!-- Images to PDF/OCR Card -->
+    <div class="card">
+      <div class="card-header bg-warning fw-bold">Images to PDF / OCR</div>
+      <div class="card-body">
+        <div id="img2pdfDrop" class="drop-zone">
+          <span>Drag & drop image files here or <label for="img2pdfInput" class="text-warning" style="cursor:pointer;">browse</label></span>
+          <input type="file" id="img2pdfInput" multiple accept=".jpg,.jpeg,.png,.bmp,.tiff,.svg,.webp,.avif,.heic,.heif" style="display:none;">
+        </div>
+        <div class="file-list" id="img2pdfList"></div>
+        <form id="img2pdfForm" class="mt-3">
+          <div class="compress-bar">
+            <label for="img2pdfQuality" class="form-label mb-0">Compression</label>
+            <input type="range" id="img2pdfQuality" min="10" max="100" value="80">
+            <span id="img2pdfQualityVal">80%</span>
+          </div>
+          <div class="mb-2">
+            <label for="img2pdfLang" class="form-label">OCR Language</label>
+            <select id="img2pdfLang" class="form-select">
+              <option value="none">No OCR</option>
               <option value="eng">English</option>
               <option value="hin">Hindi</option>
               <option value="urd">Urdu</option>
@@ -75,77 +130,170 @@
               <option value="other">Other</option>
             </select>
           </div>
-          <div class="mb-3">
-            <label for="quality" class="form-label">Compression Quality</label>
-            <input type="range" class="form-range" min="10" max="100" id="quality" value="80">
-            <div><span id="qualityVal">80</span>%</div>
-          </div>
-          <button type="button" id="convertBtn" class="btn btn-primary w-100">Convert & Compress</button>
+          <button type="button" class="btn btn-warning w-100" id="img2pdfBtn">Convert & Compress</button>
+          <div class="spinner-border text-warning" role="status" id="img2pdfSpin"></div>
         </form>
-        <div id="result" class="mt-4"></div>
+        <div class="output-area" id="img2pdfOutput"></div>
       </div>
     </div>
-    <div class="footer">
-      <span>© 2025 Kill File · Free & Open Source · Mobile Friendly</span>
+
+    <!-- Images to Images Card -->
+    <div class="card">
+      <div class="card-header bg-info text-white fw-bold">Images to Images</div>
+      <div class="card-body">
+        <div id="img2imgDrop" class="drop-zone">
+          <span>Drag & drop image files here or <label for="img2imgInput" class="text-info" style="cursor:pointer;">browse</label></span>
+          <input type="file" id="img2imgInput" multiple accept=".jpg,.jpeg,.png,.bmp,.tiff,.svg,.webp,.avif,.heic,.heif" style="display:none;">
+        </div>
+        <div class="file-list" id="img2imgList"></div>
+        <form id="img2imgForm" class="mt-3">
+          <div class="mb-2">
+            <label for="img2imgFormat" class="form-label">To Image Format</label>
+            <select id="img2imgFormat" class="form-select">
+              <option value="jpg">JPG</option>
+              <option value="png">PNG</option>
+              <option value="bmp">BMP</option>
+              <option value="tiff">TIFF</option>
+              <option value="svg">SVG</option>
+              <option value="webp">WebP</option>
+              <option value="avif">AVIF</option>
+              <option value="heic">HEIC</option>
+              <option value="heif">HEIF</option>
+            </select>
+          </div>
+          <div class="compress-bar">
+            <label for="img2imgQuality" class="form-label mb-0">Compression</label>
+            <input type="range" id="img2imgQuality" min="10" max="100" value="80">
+            <span id="img2imgQualityVal">80%</span>
+          </div>
+          <button type="button" class="btn btn-info w-100 text-white" id="img2imgBtn">Convert & Compress</button>
+          <div class="spinner-border text-info" role="status" id="img2imgSpin"></div>
+        </form>
+        <div class="output-area" id="img2imgOutput"></div>
+      </div>
+    </div>
+
+    <!-- Office to PDF/OCR Card -->
+    <div class="card">
+      <div class="card-header bg-secondary text-white fw-bold">Office Files to PDF / OCR</div>
+      <div class="card-body">
+        <div id="office2pdfDrop" class="drop-zone">
+          <span>Drag & drop office files here or <label for="office2pdfInput" class="text-secondary" style="cursor:pointer;">browse</label></span>
+          <input type="file" id="office2pdfInput" multiple accept=".doc,.docx,.xls,.xlsx,.ppt,.pptx,.csv,.txt" style="display:none;">
+        </div>
+        <div class="file-list" id="office2pdfList"></div>
+        <form id="office2pdfForm" class="mt-3">
+          <div class="compress-bar">
+            <label for="office2pdfQuality" class="form-label mb-0">Compression</label>
+            <input type="range" id="office2pdfQuality" min="10" max="100" value="80">
+            <span id="office2pdfQualityVal">80%</span>
+          </div>
+          <div class="mb-2">
+            <label for="office2pdfLang" class="form-label">OCR Language</label>
+            <select id="office2pdfLang" class="form-select">
+              <option value="none">No OCR</option>
+              <option value="eng">English</option>
+              <option value="hin">Hindi</option>
+              <option value="urd">Urdu</option>
+              <option value="guj">Gujarati</option>
+              <option value="ben">Bengali</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+          <button type="button" class="btn btn-secondary w-100" id="office2pdfBtn">Convert & Compress</button>
+          <div class="spinner-border text-secondary" role="status" id="office2pdfSpin"></div>
+        </form>
+        <div class="output-area" id="office2pdfOutput"></div>
+      </div>
+    </div>
+
+    <!-- Alerts/Errors -->
+    <div id="errorAlert" class="alert alert-danger d-none"></div>
+
+    <div class="footer text-center mt-3 mb-2">
+      <span class="text-muted">© 2025 Kill File · Free & Open Source · Mobile Friendly</span>
     </div>
   </div>
 
   <script>
-    // UI interactions
-    const dropZone = document.getElementById('dropZone');
-    const fileInput = document.getElementById('fileInput');
-    const fileList = document.getElementById('fileList');
-    const convType = document.getElementById('convType');
-    const formatOptions = document.getElementById('formatOptions');
-    const outputFormat = document.getElementById('outputFormat');
-    const quality = document.getElementById('quality');
-    const qualityVal = document.getElementById('qualityVal');
-    const convertBtn = document.getElementById('convertBtn');
-    const result = document.getElementById('result');
+    // Helper functions for all drop-zones and file inputs
+    function setupFileSection(section) {
+      // Elements
+      const dropZone = document.getElementById(section + 'Drop');
+      const fileInput = document.getElementById(section + 'Input');
+      const fileList = document.getElementById(section + 'List');
+      let files = [];
 
-    let files = [];
-
-    dropZone.addEventListener('click', () => fileInput.click());
-    dropZone.addEventListener('dragover', (e) => {
-      e.preventDefault();
-      dropZone.classList.add('dragover');
-    });
-    dropZone.addEventListener('dragleave', () => dropZone.classList.remove('dragover'));
-    dropZone.addEventListener('drop', (e) => {
-      e.preventDefault();
-      dropZone.classList.remove('dragover');
-      handleFiles(e.dataTransfer.files);
-    });
-    fileInput.addEventListener('change', () => handleFiles(fileInput.files));
-
-    function handleFiles(selectedFiles) {
-      files = Array.from(selectedFiles);
-      fileList.innerHTML = files.map(f => `<div>${f.name} (${Math.round(f.size/1024)} KB)</div>`).join('');
+      dropZone.addEventListener('click', () => fileInput.click());
+      dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.classList.add('dragover'); });
+      dropZone.addEventListener('dragleave', () => dropZone.classList.remove('dragover'));
+      dropZone.addEventListener('drop', (e) => {
+        e.preventDefault(); dropZone.classList.remove('dragover');
+        handleFiles(e.dataTransfer.files);
+      });
+      fileInput.addEventListener('change', () => handleFiles(fileInput.files));
+      function handleFiles(selectedFiles) {
+        files = Array.from(selectedFiles);
+        fileList.innerHTML = files.map(f => `<div>${f.name} (${Math.round(f.size/1024)} KB)</div>`).join('');
+      }
+      return () => files;
     }
 
-    convType.addEventListener('change', () => {
-      if (convType.value === 'pdf2img' || convType.value === 'img2img') {
-        formatOptions.style.display = 'block';
-      } else {
-        formatOptions.style.display = 'none';
-      }
-    });
+    // Attach file handler for each section
+    const getPdf2pdfFiles = setupFileSection('pdf2pdf');
+    const getPdf2imgFiles = setupFileSection('pdf2img');
+    const getImg2pdfFiles = setupFileSection('img2pdf');
+    const getImg2imgFiles = setupFileSection('img2img');
+    const getOffice2pdfFiles = setupFileSection('office2pdf');
 
-    quality.addEventListener('input', () => {
-      qualityVal.textContent = quality.value;
-    });
+    // Compression slider sync
+    function setupQualitySlider(sliderId, valId) {
+      const slider = document.getElementById(sliderId);
+      const val = document.getElementById(valId);
+      slider.addEventListener('input', () => { val.textContent = slider.value + '%'; });
+    }
+    setupQualitySlider('pdf2pdfQuality', 'pdf2pdfQualityVal');
+    setupQualitySlider('pdf2imgQuality', 'pdf2imgQualityVal');
+    setupQualitySlider('img2pdfQuality', 'img2pdfQualityVal');
+    setupQualitySlider('img2imgQuality', 'img2imgQualityVal');
+    setupQualitySlider('office2pdfQuality', 'office2pdfQualityVal');
 
-    // Dummy conversion function (replace with real backend/API integration)
-    convertBtn.addEventListener('click', () => {
-      if (files.length === 0) {
-        result.innerHTML = '<div class="alert alert-danger">Please select at least one file.</div>';
-        return;
-      }
-      result.innerHTML = '<div class="alert alert-info">Processing files...<br>(Demo: No real conversion yet)</div>';
-      setTimeout(() => {
-        result.innerHTML = `<div class="alert alert-success">Converted ${files.length} file(s)!<br><button class="btn btn-success">Download All</button></div>`;
-      }, 1500);
-    });
+    // Error alert utility
+    function showError(msg) {
+      const alert = document.getElementById('errorAlert');
+      alert.textContent = msg;
+      alert.classList.remove('d-none');
+      setTimeout(() => alert.classList.add('d-none'), 3500);
+    }
+
+    // Conversion stubs — replace with real backend/API
+    function setupConvertButton(btnId, spinId, getFilesFn, outputId, optionsFn) {
+      const btn = document.getElementById(btnId);
+      const spin = document.getElementById(spinId);
+      const output = document.getElementById(outputId);
+      btn.addEventListener('click', () => {
+        const files = getFilesFn();
+        if (!files.length) { showError('Please select at least one file.'); return; }
+        spin.style.display = 'inline-block';
+        btn.disabled = true;
+        output.innerHTML = '';
+        setTimeout(() => {
+          spin.style.display = 'none';
+          btn.disabled = false;
+          output.innerHTML = `
+            <div class="alert alert-success">Converted ${files.length} file(s)!<br>
+              <button class="btn btn-outline-success btn-sm">Download All</button>
+            </div>`;
+        }, 1600); // Simulate processing
+      });
+    }
+
+    // Set up each section's convert button
+    setupConvertButton('pdf2pdfBtn', 'pdf2pdfSpin', getPdf2pdfFiles, 'pdf2pdfOutput');
+    setupConvertButton('pdf2imgBtn', 'pdf2imgSpin', getPdf2imgFiles, 'pdf2imgOutput');
+    setupConvertButton('img2pdfBtn', 'img2pdfSpin', getImg2pdfFiles, 'img2pdfOutput');
+    setupConvertButton('img2imgBtn', 'img2imgSpin', getImg2imgFiles, 'img2imgOutput');
+    setupConvertButton('office2pdfBtn', 'office2pdfSpin', getOffice2pdfFiles, 'office2pdfOutput');
   </script>
 </body>
 </html>
