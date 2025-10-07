@@ -17,7 +17,6 @@ const jobs: FastifyPluginAsync = async (fastify) => {
       input: request.body,
     };
     await redis.rpush('job-queue', JSON.stringify(jobPayload));
-    // Set initial job status
     await redis.set(`job:${jobId}`, "created");
     return { jobId, status: 'created' };
   });
