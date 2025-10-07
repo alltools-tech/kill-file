@@ -1,50 +1,56 @@
-/* Extra custom styles for Kill File web app */
+/* Custom styles for Kill File */
 
-body {
-  font-family: 'Segoe UI', 'Roboto', Arial, sans-serif;
+.file-pill {
+  transition: box-shadow 0.2s, background 0.2s;
+  box-shadow: 0 1px 8px #21d4fd22;
+  border: 1.5px solid #d1eaff;
 }
-
-.card-header {
-  font-size: 1.1rem;
-  letter-spacing: 0.5px;
+.file-pill:hover {
+  background: #d1eaff;
+  box-shadow: 0 2px 14px #21d4fd33;
 }
-
-.drop-zone {
-  transition: background 0.2s, border-color 0.2s;
+.output-pill {
+  background: #e6f5ea;
+  border: 1.5px solid #b2f2dd;
 }
-
-.drop-zone.dragover {
-  border-color: #28a745;
-  background: #e7fbe7;
+.edit-name-input:focus {
+  outline: 2px solid #21d4fd;
+  background: #f0f8ff;
 }
-
-.file-list div {
-  padding: 2px 0;
-  border-bottom: 1px dashed #ddd;
-}
-
-.compress-bar input[type="range"] {
-  width: 140px;
-}
-
-.btn {
+.btn-preview {
+  background: linear-gradient(90deg,#21d4fd 60%, #23296b 100%);
+  color: #fff !important;
   font-weight: 500;
+  border: none;
 }
-
+.btn-preview:hover {
+  background: linear-gradient(90deg,#23296b 60%, #21d4fd 100%);
+  color: #fff !important;
+}
+.btn-download, .download-zip-btn {
+  background: #e1edff;
+  color: #23296b;
+  font-weight: 500;
+  border: none;
+}
+.btn-download:hover, .download-zip-btn:hover {
+  background: #23296b;
+  color: #fff !important;
+}
+.preview-modal .modal-content {
+  border-radius: 14px;
+  box-shadow: 0 2px 20px #21d4fd33;
+  background: #f8f9fa;
+}
+.preview-modal .modal-header {
+  background: linear-gradient(90deg,#21d4fd 60%, #23296b 100%);
+  color: #fff;
+  border-radius: 14px 14px 0 0;
+}
+.preview-modal .modal-title {
+  font-size: 1.15em;
+  font-weight: 700;
+}
 .spinner-border {
-  vertical-align: middle;
-}
-
-.output-area .btn {
-  margin-top: 6px;
-}
-
-.alert {
-  margin-top: 10px;
-}
-
-.footer {
-  font-size: 0.92em;
-  color: #888;
-  margin-top: 2rem;
+  width: 1.7em; height: 1.7em;
 }
