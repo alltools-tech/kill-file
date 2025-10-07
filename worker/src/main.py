@@ -1,17 +1,19 @@
 import redis
 import time
+import json
 
 def fetch_job(r):
-    # Simple Redis list pop simulation (blocking)
     job = r.blpop('job-queue', timeout=5)
     if job:
-        print(f"Fetched job: {job[1].decode()}")
+        job_data = json.loads(job[1].decode())
+        print(f"Fetched job: {job_data}")
+        # TODO: process job_data (conversion logic here)
     else:
         print("No job found...")
 
 def main():
     print("Worker started. Waiting for conversion jobs...")
-    r = redis.Redis(host='redis', port=6379, db=0)  # 'redis' is docker-compose service name
+    r = redis.Redis(host='redis', port=6379, db=0)
     while True:
         try:
             fetch_job(r)
