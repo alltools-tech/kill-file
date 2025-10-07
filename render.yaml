@@ -15,23 +15,15 @@ services:
         value: AJpQ3OSMTnT11Q8IFMXCv3SHDpb6oxEw
       - key: POSTGRES_PORT
         value: "5432"
+      # ... (baaki ENV yahan daal sakte hain)
+    port: 8080
 
-    - type: worker
+  - type: worker
     name: kill-file-worker
     env: docker
     plan: starter
     dockerfilePath: ./docker/worker.Dockerfile
     envVars:
-      - key: REDIS_HOST
-        value: <your-redis-service-host>
-      - key: MINIO_ENDPOINT
-        value: <your-minio-service-url>
-      - key: MINIO_ROOT_USER
-        value: minioadmin
-      - key: MINIO_ROOT_PASSWORD
-        value: minioadmin
-      - key: MINIO_BUCKET
-        value: uploads
       - key: POSTGRES_HOST
         value: dpg-d3ib753e5dus738vv740-a
       - key: POSTGRES_DB
@@ -42,3 +34,4 @@ services:
         value: AJpQ3OSMTnT11Q8IFMXCv3SHDpb6oxEw
       - key: POSTGRES_PORT
         value: "5432"
+      # ... (baaki ENV yahan daal sakte hain)
