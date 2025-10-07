@@ -3,7 +3,7 @@ services:
     name: kill-file-api
     env: docker
     plan: starter
-    dockerfilePath: ./docker/api.Dockerfile
+    dockerfilePath: ./api/Dockerfile # <-- check this path!
     envVars:
       - key: REDIS_HOST
         value: redis
@@ -15,14 +15,13 @@ services:
         value: minioadmin
       - key: MINIO_BUCKET
         value: uploads
-      # Add your other ENV as needed
     port: 8080
 
   - type: worker
     name: kill-file-worker
     env: docker
     plan: starter
-    dockerfilePath: ./docker/worker.Dockerfile
+    dockerfilePath: ./worker/Dockerfile # <-- check this path!
     envVars:
       - key: REDIS_HOST
         value: redis
@@ -39,7 +38,8 @@ services:
     name: minio
     env: docker
     plan: starter
-    dockerfilePath: docker/minio.Dockerfile
+    image: minio/minio:latest # <-- Use official image!
+    startCommand: server /data
     envVars:
       - key: MINIO_ROOT_USER
         value: minioadmin
@@ -55,14 +55,14 @@ services:
     name: redis
     env: docker
     plan: starter
-    dockerfilePath: docker/redis.Dockerfile
+    image: redis:7 # <-- Use official image!
     port: 6379
 
   - type: pserv
     name: postgres
     env: docker
     plan: starter
-    dockerfilePath: docker/postgres.Dockerfile
+    image: postgres:14 # <-- Use official image!
     envVars:
       - key: POSTGRES_DB
         value: killfile
