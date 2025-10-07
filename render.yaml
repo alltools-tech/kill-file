@@ -1,6 +1,5 @@
 services:
 
-
   - type: web
     name: kill-file-api
     env: docker
