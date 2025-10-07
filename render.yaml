@@ -4,4 +4,31 @@ services:
     env: docker
     plan: starter
     dockerfilePath: ./docker/api.Dockerfile
-    port: 8080
+    envVars:
+      - key: POSTGRES_HOST
+        value: dpg-d3ib753e5dus738vv740-a
+      - key: POSTGRES_DB
+        value: kill_26vz
+      - key: POSTGRES_USER
+        value: kill_26vz_user
+      - key: POSTGRES_PASSWORD
+        value: AJpQ3OSMTnT11Q8IFMXCv3SHDpb6oxEw
+      - key: POSTGRES_PORT
+        value: "5432"
+
+  - type: worker
+    name: kill-file-worker
+    env: docker
+    plan: starter
+    dockerfilePath: ./docker/worker.Dockerfile
+    envVars:
+      - key: POSTGRES_HOST
+        value: dpg-d3ib753e5dus738vv740-a
+      - key: POSTGRES_DB
+        value: kill_26vz
+      - key: POSTGRES_USER
+        value: kill_26vz_user
+      - key: POSTGRES_PASSWORD
+        value: AJpQ3OSMTnT11Q8IFMXCv3SHDpb6oxEw
+      - key: POSTGRES_PORT
+        value: "5432"
