@@ -1,5 +1,7 @@
 // Integration code to wire HTML buttons to backend API
 
+const API_BASE = "https://kill-file-1.onrender.com"; // <-- Render backend
+
 // PDF to PDF/OCR
 document.getElementById('pdf2pdfBtn').addEventListener('click', async function() {
     const files = Array.from(document.getElementById('pdf2pdfInput').files);
@@ -8,7 +10,7 @@ document.getElementById('pdf2pdfBtn').addEventListener('click', async function()
     const spinner = document.getElementById('pdf2pdfSpin');
     spinner.style.display = 'inline-block';
     try {
-        let result = await uploadAndConvert("http://localhost:8000/convert/pdf", files, {compress, ocr_lang: ocrLang});
+        let result = await uploadAndConvert(API_BASE + "/convert/pdf", files, {compress, ocr_lang: ocrLang});
         spinner.style.display = 'none';
         let html = result.results.map(r => `
             <span class="file-pill output-pill">
@@ -36,7 +38,7 @@ document.getElementById('pdf2imgBtn').addEventListener('click', async function()
     const spinner = document.getElementById('pdf2imgSpin');
     spinner.style.display = 'inline-block';
     try {
-        let result = await uploadAndConvert("http://localhost:8000/convert/image", files, {to_format: toFormat, compress});
+        let result = await uploadAndConvert(API_BASE + "/convert/image", files, {to_format: toFormat, compress});
         spinner.style.display = 'none';
         let html = result.results.map(r => `
             <span class="file-pill output-pill">
@@ -64,7 +66,7 @@ document.getElementById('img2pdfBtn').addEventListener('click', async function()
     const spinner = document.getElementById('img2pdfSpin');
     spinner.style.display = 'inline-block';
     try {
-        let result = await uploadAndConvert("http://localhost:8000/convert/pdf", files, {compress, ocr_lang: ocrLang});
+        let result = await uploadAndConvert(API_BASE + "/convert/pdf", files, {compress, ocr_lang: ocrLang});
         spinner.style.display = 'none';
         let html = result.results.map(r => `
             <span class="file-pill output-pill">
@@ -92,7 +94,7 @@ document.getElementById('img2imgBtn').addEventListener('click', async function()
     const spinner = document.getElementById('img2imgSpin');
     spinner.style.display = 'inline-block';
     try {
-        let result = await uploadAndConvert("http://localhost:8000/convert/image", files, {to_format: toFormat, compress});
+        let result = await uploadAndConvert(API_BASE + "/convert/image", files, {to_format: toFormat, compress});
         spinner.style.display = 'none';
         let html = result.results.map(r => `
             <span class="file-pill output-pill">
@@ -120,7 +122,7 @@ document.getElementById('office2pdfBtn').addEventListener('click', async functio
     const spinner = document.getElementById('office2pdfSpin');
     spinner.style.display = 'inline-block';
     try {
-        let result = await uploadAndConvert("http://localhost:8000/convert/office", files, {compress, ocr_lang: ocrLang});
+        let result = await uploadAndConvert(API_BASE + "/convert/office", files, {compress, ocr_lang: ocrLang});
         spinner.style.display = 'none';
         let html = result.results.map(r => `
             <span class="file-pill output-pill">
@@ -148,7 +150,7 @@ function bulkZipDownload(type, compress) {
         case 'image': files = [...document.getElementById('pdf2imgInput').files, ...document.getElementById('img2imgInput').files]; break;
         case 'office': files = [...document.getElementById('office2pdfInput').files]; break;
     }
-    uploadAndConvertZip("http://localhost:8000/convert/zip", files, type, compress)
+    uploadAndConvertZip(API_BASE + "/convert/zip", files, type, compress)
         .then(blob => {
             const a = document.createElement('a');
             a.href = URL.createObjectURL(blob);
@@ -158,7 +160,7 @@ function bulkZipDownload(type, compress) {
         .catch(err => alert('ZIP API Error: ' + err.message));
 }
 
-// Preview modal for download link
+// Preview modal for download link (unchanged)
 window.showPreviewLink = function(url, name) {
     let ext = name.split('.').pop().toLowerCase();
     let previewHtml = '';
@@ -173,3 +175,28 @@ window.showPreviewLink = function(url, name) {
     const modal = new bootstrap.Modal(document.getElementById('previewModal'));
     modal.show();
 };
+
+// --- API Helper functions ---
+async function uploadAndConvert(endpoint, files, formFields = {}) {
+  const formData = new FormData();
+  files.forEach(f => formData.append('files', f));
+  Object.entries(formFields).forEach(([key, val]) => formData.append(key, val));
+  const resp = await fetch(endpoint, {
+    method: "POST",
+    body: formData
+  });
+  if (!resp.ok) throw new Error(await resp.text());
+  return await resp.json();
+}
+async function uploadAndConvertZip(endpoint, files, type, compress) {
+  const formData = new FormData();
+  files.forEach(f => formData.append('files', f));
+  formData.append('type', type);
+  formData.append('compress', compress);
+  const resp = await fetch(endpoint, {
+    method: "POST",
+    body: formData
+  });
+  if (!resp.ok) throw new Error(await resp.text());
+  return await resp.blob();
+}
