@@ -4,8 +4,8 @@ const API_BASE = "https://kill-file-1.onrender.com";
 // Convert FileList to FormData for bulk upload
 function uploadAndConvert(endpoint, files, formFields = {}) {
   const formData = new FormData();
-  // Bugfix: support both FileList and Array
-  (Array.from(files)).forEach(f => formData.append('files', f));
+  // Bugfix: support FileList or Array
+  Array.from(files).forEach(f => formData.append('files', f));
   Object.entries(formFields).forEach(([k, v]) => formData.append(k, v));
   return fetch(endpoint, {
     method: 'POST',
@@ -21,10 +21,10 @@ function uploadAndConvert(endpoint, files, formFields = {}) {
   });
 }
 
-// Bulk ZIP endpoint
+// Bulk ZIP endpoint (for multiple files)
 function uploadAndConvertZip(endpoint, files, convertType, compress) {
   const formData = new FormData();
-  (Array.from(files)).forEach(f => formData.append('files', f));
+  Array.from(files).forEach(f => formData.append('files', f));
   formData.append('convert_type', convertType);
   formData.append('compress', compress);
   return fetch(endpoint, {
