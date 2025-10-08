@@ -346,6 +346,50 @@
 
     </div>
 
+    <!-- Help/FAQ & Contact Cards -->
+    <div class="row mb-4">
+      <div class="col-md-6">
+        <div class="card h-100">
+          <div class="card-header" style="background: linear-gradient(90deg,#e9ecf7 60%, #d9faff 100%); color: #23296b;">
+            <i class="bi bi-question-circle-fill"></i> Help & FAQ
+          </div>
+          <div class="card-body">
+            <ul class="list-unstyled">
+              <li><b>Q:</b> Which files can I convert?<br>
+                  <b>A:</b> PDF, images (JPG, PNG, SVG, etc), Office files (DOCX, XLSX, PPTX, TXT, etc).</li>
+              <li class="mt-2"><b>Q:</b> Maximum file size?<br>
+                  <b>A:</b> 12 MB per file.</li>
+              <li class="mt-2"><b>Q:</b> How to bulk download converted files?<br>
+                  <b>A:</b> Use the "Download All as ZIP" button after conversion.</li>
+              <li class="mt-2"><b>Q:</b> Which languages are supported for OCR?<br>
+                  <b>A:</b> English, Hindi, Urdu, Chinese, Japanese, Arabic, Russian, French.</li>
+              <li class="mt-2"><b>Q:</b> My conversion fails! What should I do?<br>
+                  <b>A:</b> Check file type/size, refresh page, or contact support.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="card h-100">
+          <div class="card-header" style="background: linear-gradient(90deg,#f7e8ff 60%, #f1f1f1 100%); color: #6c3bbc;">
+            <i class="bi bi-envelope-at-fill"></i> Contact & Support
+          </div>
+          <div class="card-body">
+            <p>
+              <b>Email:</b> <a href="mailto:support@killfile.io">support@killfile.io</a><br>
+              <b>GitHub:</b> <a href="https://github.com/alltools-tech/killfile" target="_blank">alltools-tech/killfile</a><br>
+              <b>Telegram:</b> <a href="https://t.me/killfile_support" target="_blank">@killfile_support</a>
+            </p>
+            <p>
+              For bugs, suggestions or feature requests,<br>
+              create an issue on GitHub or email us.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- End Help/FAQ & Contact Cards -->
+
     <!-- Alerts/Errors -->
     <div id="errorAlert" class="alert alert-danger d-none"></div>
 
@@ -526,7 +570,7 @@
     setupConvertButton('img2imgBtn', 'img2imgSpin', getImg2imgFiles, 'img2imgOutput', ['jpg','jpeg','png','bmp','tiff','svg','webp','avif','heic','heif']);
     setupConvertButton('office2pdfBtn', 'office2pdfSpin', getOffice2pdfFiles, 'office2pdfOutput', ['pdf']);
   </script>
-<script src="api.js"></script>
-<script src="integration.js"></script>
+  <script src="api.js"></script>
+  <script src="integration.js"></script>
 </body>
 </html>
