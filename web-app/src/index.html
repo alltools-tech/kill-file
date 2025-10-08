@@ -3,11 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Kill File – Universal Files Converter & Compressor</title>
+  <title>Kill File â€“ Universal Files Converter & Compressor</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link href="style.css" rel="stylesheet">
+  <link href="../public/style.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
   <style>
+    /* old design styles preserved from previous version */
     body { background: linear-gradient(135deg, #f3f7fa 0%, #e9ebf7 100%); }
     .main-title {
       font-size: 3.3rem;
@@ -342,6 +343,7 @@
           </div>
         </div>
       </div>
+
     </div>
 
     <!-- Help/FAQ & Contact Cards -->
@@ -405,11 +407,10 @@
     </div>
 
     <div class="footer text-center mt-3 mb-2">
-      <span class="text-muted">© 2025 Kill File · Free & Open Source · International OCR · ZIP Bulk Download</span>
+      <span class="text-muted">Â© 2025 Kill File Â· Free & Open Source Â· International OCR Â· ZIP Bulk Download</span>
     </div>
   </div>
 
-  <!-- Bugfix JS for double browse in all sections -->
   <script>
     // Helper functions
     function formatSize(bytes) {
@@ -421,21 +422,14 @@
       return name.split('.').pop();
     }
 
+    // File selection bug fix: don't clear files unless new files selected
     function setupFileSection(section, allowedPreview=['pdf','jpg','jpeg','png','bmp','svg','webp','avif','heic','heif']) {
       const dropZone = document.getElementById(section + 'Drop');
       const fileInput = document.getElementById(section + 'Input');
       const fileList = document.getElementById(section + 'List');
       let files = [];
 
-      // Fix: Prevent double browse dialog
-      dropZone.querySelector('label').addEventListener('click', function(e) {
-        e.stopPropagation();
-      });
-
-      dropZone.addEventListener('click', (e) => {
-        if (e.target === dropZone) fileInput.click();
-      });
-
+      dropZone.addEventListener('click', () => fileInput.click());
       dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.classList.add('dragover'); });
       dropZone.addEventListener('dragleave', () => dropZone.classList.remove('dragover'));
       dropZone.addEventListener('drop', (e) => {
@@ -457,15 +451,16 @@
           </span>`
         ).join('');
       }
+      // For ZIP download and preview, return files array
       return () => files;
     }
 
     // Attach file handler for each section
-    setupFileSection('pdf2pdf', ['pdf']);
-    setupFileSection('pdf2img', ['pdf']);
-    setupFileSection('img2pdf', ['jpg','jpeg','png','bmp','tiff','svg','webp','avif','heic','heif']);
-    setupFileSection('img2img', ['jpg','jpeg','png','bmp','tiff','svg','webp','avif','heic','heif']);
-    setupFileSection('office2pdf', ['doc','docx','xls','xlsx','ppt','pptx','csv','txt']);
+    const getPdf2pdfFiles = setupFileSection('pdf2pdf', ['pdf']);
+    const getPdf2imgFiles = setupFileSection('pdf2img', ['jpg','jpeg','png','bmp','tiff','svg','webp','avif','heic','heif']);
+    const getImg2pdfFiles = setupFileSection('img2pdf', ['pdf']);
+    const getImg2imgFiles = setupFileSection('img2img', ['jpg','jpeg','png','bmp','tiff','svg','webp','avif','heic','heif']);
+    const getOffice2pdfFiles = setupFileSection('office2pdf', ['pdf']);
 
     // Compression slider sync
     function setupQualitySlider(sliderId, valId) {
@@ -486,8 +481,95 @@
       alert.classList.remove('d-none');
       setTimeout(() => alert.classList.add('d-none'), 3500);
     }
+
+    // Conversion stub â€” will later use backend/API; demo output for now
+    function setupConvertButton(btnId, spinId, getFilesFn, outputId, allowedPreview=['pdf','jpg','jpeg','png','bmp','svg','webp','avif','heic','heif']) {
+      const btn = document.getElementById(btnId);
+      const spin = document.getElementById(spinId);
+      const output = document.getElementById(outputId);
+
+      btn.addEventListener('click', () => {
+        const files = getFilesFn();
+        if (!files.length) { showError('Please select at least one file.'); return; }
+        spin.style.display = 'inline-block'; // Show spinner
+        btn.disabled = true;
+        output.innerHTML = '';
+        setTimeout(() => {
+          spin.style.display = 'none'; // Hide spinner after "processing"
+          btn.disabled = false;
+          output.innerHTML = files.map((f, idx) => {
+            const ext = getExt(f.name);
+            // Simulate new file size (compressed)
+            const newSize = Math.max(Math.round(f.size * 0.7), 1200 + idx * 1100);
+            // Editable name field
+            const outNameId = outputId + '_name_' + idx;
+            return `
+              <span class="file-pill output-pill">
+                <i class="bi bi-file-earmark-arrow-down"></i>
+                <input class="edit-name-input" id="${outNameId}" value="${f.name.replace(/\.[^/.]+$/, '')}_out.${ext}" />
+                <span class="badge bg-light text-dark">${ext.toUpperCase()}</span>
+                <span class="badge bg-success text-dark">${formatSize(newSize)}</span>
+                <button class="btn btn-outline-success btn-sm btn-download" onclick="downloadDemoFile('${outNameId}', '${ext}', ${newSize})">Download</button>
+                ${allowedPreview.includes(ext) ? `<button class="btn btn-outline-primary btn-sm btn-preview" onclick="showPreview('${ext}', ${idx}, '${outNameId}')">Preview</button>` : ''}
+              </span>
+            `;
+          }).join('');
+
+          // ZIP download button for bulk
+          if (files.length > 1) {
+            output.innerHTML += `<button class="btn btn-outline-primary btn-sm mt-2 download-zip-btn" onclick="downloadZipDemo('${outputId}', ${files.length})">Download All as ZIP</button>`;
+          }
+        }, 1700);
+      });
+    }
+
+    // Dummy download function (to be replaced with real download)
+    window.downloadDemoFile = function(nameId, ext, size) {
+      const name = document.getElementById(nameId).value;
+      const blob = new Blob(["Demo File Content"], {type: ext==='pdf'?'application/pdf':'application/octet-stream'});
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = name;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    };
+
+    // Dummy bulk ZIP download
+    window.downloadZipDemo = function(outputId, count) {
+      const zipName = "converted-files.zip";
+      const blob = new Blob(["Demo ZIP Content"], {type: "application/zip"});
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = zipName;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    };
+
+    // Dummy preview (image/pdf demo)
+    window.showPreview = function(ext, idx, nameId) {
+      const name = document.getElementById(nameId).value;
+      let previewHtml = '';
+      if (['jpg','jpeg','png','bmp','svg','webp','avif','heic','heif'].includes(ext)) {
+        previewHtml = `<img src="https://via.placeholder.com/420x300.png?text=Preview+${ext.toUpperCase()}" class="preview-image mb-2"><div>${name}</div>`;
+      } else if (ext === 'pdf') {
+        previewHtml = `<iframe src="https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf" class="preview-pdf"></iframe><div>${name}</div>`;
+      } else {
+        previewHtml = `<div>No preview available for ${ext.toUpperCase()}.</div>`;
+      }
+      document.getElementById('previewContent').innerHTML = previewHtml;
+      const modal = new bootstrap.Modal(document.getElementById('previewModal'));
+      modal.show();
+    };
+
+    // Set up each section's convert button
+    setupConvertButton('pdf2pdfBtn', 'pdf2pdfSpin', getPdf2pdfFiles, 'pdf2pdfOutput', ['pdf']);
+    setupConvertButton('pdf2imgBtn', 'pdf2imgSpin', getPdf2imgFiles, 'pdf2imgOutput', ['jpg','jpeg','png','bmp','tiff','svg','webp','avif','heic','heif']);
+    setupConvertButton('img2pdfBtn', 'img2pdfSpin', getImg2pdfFiles, 'img2pdfOutput', ['pdf']);
+    setupConvertButton('img2imgBtn', 'img2imgSpin', getImg2imgFiles, 'img2imgOutput', ['jpg','jpeg','png','bmp','tiff','svg','webp','avif','heic','heif']);
+    setupConvertButton('office2pdfBtn', 'office2pdfSpin', getOffice2pdfFiles, 'office2pdfOutput', ['pdf']);
   </script>
-  <!-- Your integration.js and api.js will handle backend communication -->
   <script src="api.js"></script>
   <script src="integration.js"></script>
 </body>
