@@ -8,7 +8,6 @@ opencv-python
 python-docx
 python-pptx
 openpyxl
-pyexcel
 pyexcel-xlsx
 pyexcel-ods
 pyexcel-pdf
