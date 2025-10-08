@@ -10,6 +10,5 @@ python-pptx
 openpyxl
 pyexcel-xlsx
 pyexcel-ods
-pyexcel-pdf
 tesserocr
 pyzipper
