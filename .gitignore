@@ -1,29 +1,40 @@
-# Kill File: .gitignore
-
-# Ignore node modules (if npm used)
-node_modules/
-# Ignore build folders
-dist/
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.env
+venv/
+env/
 build/
-# Ignore OS files
+dist/
+*.egg-info/
+
+# Node.js
+node_modules/
+npm-debug.log*
+
+# Frontend static build
+web-app/build/
+web-app/dist/
+
+# OS files
 .DS_Store
 Thumbs.db
-# Ignore log files
-*.log
-# Ignore temp files
-*.tmp
-# Ignore coverage reports
-coverage/
-# Ignore IDE/project files
+
+# Editor/IDE
 .vscode/
 .idea/
-*.iml
-*.sublime-workspace
-*.sublime-project
-# Ignore hidden files
-.env
-# Ignore web-app/public/sample files
-web-app/public/samples/
-# Ignore Android build files (if ever used)
-android-app/build/
-android-app/app/build/
+*.swp
+
+# Logs
+*.log
+
+# Test outputs
+converted/
+converted_files.zip
+backend/samples/*.zip
+
+# Misc
+*.bak
+*.tmp
