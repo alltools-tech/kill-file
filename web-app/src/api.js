@@ -1,3 +1,4 @@
+const API_BASE = "https://kill-file-1.onrender.com";
 // Universal API helper for file conversion/compression endpoints
 
 // Convert FileList to FormData for bulk upload
