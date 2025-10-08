@@ -40,6 +40,13 @@ app = FastAPI(
     version="0.2.1",
 )
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["https://kill-file.vercel.app"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 @app.get("/health")
 def health():
     logger.info("Health endpoint pinged.")
