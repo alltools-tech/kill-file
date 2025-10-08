@@ -11,4 +11,5 @@ openpyxl
 pyexcel-xlsx
 pyexcel-ods
 tesserocr
+pytesseract
 pyzipper
