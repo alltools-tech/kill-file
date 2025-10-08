@@ -1,0 +1,6 @@
+fastapi
+uvicorn
+pillow
+pytesseract
+python-multipart
+# Agar aur koi package use ho raha ho toh yahan add karein
