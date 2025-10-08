@@ -6,10 +6,10 @@ import io
 import zipfile
 import os
 
-from utils.pdf_utils import pdf_to_pdf
-from utils.image_utils import image_to_image
-from utils.office_utils import office_to_pdf_with_ocr
-from utils.ocr_utils import ocr_image_bytes
+from backend.utils.pdf_utils import pdf_to_pdf
+from backend.utils.image_utils import image_to_image
+from backend.utils.office_utils import office_to_pdf_with_ocr
+from backend.utils.ocr_utils import ocr_image_bytes
 
 # --- Security Config & Validation ---
 ALLOWED_PDF = ['pdf']
