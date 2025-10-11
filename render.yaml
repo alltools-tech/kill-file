@@ -1,7 +1,10 @@
 services:
   - type: web
-    name: fastapi-backend
+    name: killfile-backend
     env: python
     buildCommand: "pip install -r backend/requirements.txt"
-    startCommand: "gunicorn backend.app:app -k uvicorn.workers.UvicornWorker"
+    startCommand: "gunicorn backend.passenger_wsgi:app"
     plan: free
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.10
