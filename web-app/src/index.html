@@ -35,117 +35,110 @@
   </style>
 </head>
 <body>
-  <div class="container py-2">
-    <div class="text-center">
-      <div class="main-title mt-2 mb-0">Kill File</div>
-      <div class="subtitle-card mb-3">Universal Files Converter & Compressor</div>
-    </div>
-    <div class="row g-4">
-
-      <!-- PDF to PDF/OCR -->
-      <div class="col-md-6">
-        <div class="card">
-          <div class="card-header" style="background: linear-gradient(90deg,#d7e5fa 60%, #a9e9ff 100%); color: #23296b;">
-            <i class="bi bi-file-earmark-pdf-fill"></i> PDF to PDF / OCR
-          </div>
-          <div class="card-body">
-            <div class="drag-card">
-              <div id="pdf2pdfDrop" class="drop-zone mb-2">
-                Drag & drop PDF files here<br>
-                <span>or <label for="pdf2pdfInput">browse</label></span>
-                <input type="file" id="pdf2pdfInput" multiple accept=".pdf" style="display:none;">
-              </div>
+<div class="container py-2">
+  <div class="text-center">
+    <div class="main-title mt-2 mb-0">Kill File</div>
+    <div class="subtitle-card mb-3">Universal Files Converter & Compressor</div>
+  </div>
+  <div class="row g-4">
+    <!-- PDF to PDF/OCR -->
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-header" style="background: linear-gradient(90deg,#d7e5fa 60%, #a9e9ff 100%); color: #23296b;">
+          <i class="bi bi-file-earmark-pdf-fill"></i> PDF to PDF / OCR
+        </div>
+        <div class="card-body">
+          <div class="drag-card">
+            <div id="pdf2pdfDrop" class="drop-zone mb-2">
+              Drag & drop PDF files here<br>
+              <span>or <label for="pdf2pdfInput">browse</label></span>
+              <input type="file" id="pdf2pdfInput" multiple accept=".pdf" style="display:none;">
             </div>
-            <div class="file-list" id="pdf2pdfList"></div>
-            <form id="pdf2pdfForm">
-              <div class="compress-bar mb-2">
-                <label for="pdf2pdfQuality" class="form-label mb-0">Compression</label>
-                <input type="range" id="pdf2pdfQuality" min="10" max="100" value="80">
-                <span id="pdf2pdfQualityVal">80%</span>
-              </div>
-              <div class="mb-3">
-                <label for="pdf2pdfLang" class="form-label">OCR Language</label>
-                <select id="pdf2pdfLang" class="form-select">
-                  <option value="none">No OCR</option>
-                  <option value="eng">English</option>
-                  <option value="hin">Hindi</option>
-                  <option value="urd">Urdu</option>
-                  <option value="chi">Chinese</option>
-                  <option value="jpn">Japanese</option>
-                  <option value="ara">Arabic</option>
-                  <option value="rus">Russian</option>
-                  <option value="fra">French</option>
-                </select>
-              </div>
-              <button type="button" class="btn btn-primary btn-convert w-100" id="pdf2pdfBtn">Convert & Compress</button>
-              <div class="spinner-border text-primary" role="status" id="pdf2pdfSpin"></div>
-            </form>
-            <div class="output-area" id="pdf2pdfOutput"></div>
           </div>
-        </div>
-      </div>
-
-      <!-- Images to PDF/OCR -->
-      <div class="col-md-6">
-        <div class="card">
-          <div class="card-header" style="background: linear-gradient(90deg,#fffbc7 60%, #ffe4e9 100%); color: #b8850b;">
-            <i class="bi bi-images"></i> Images to PDF / OCR
-          </div>
-          <div class="card-body">
-            <div class="drag-card">
-              <div id="img2pdfDrop" class="drop-zone mb-2">
-                Drag & drop image files here<br>
-                <span>or <label for="img2pdfInput">browse</label></span>
-                <input type="file" id="img2pdfInput" multiple accept=".jpg,.jpeg,.png,.bmp,.tiff,.svg,.webp,.avif,.heic,.heif" style="display:none;">
-              </div>
+          <div class="file-list" id="pdf2pdfList"></div>
+          <form id="pdf2pdfForm">
+            <div class="compress-bar mb-2">
+              <label for="pdf2pdfQuality" class="form-label mb-0">Compression</label>
+              <input type="range" id="pdf2pdfQuality" min="10" max="100" value="80">
+              <span id="pdf2pdfQualityVal">80%</span>
             </div>
-            <div class="file-list" id="img2pdfList"></div>
-            <form id="img2pdfForm">
-              <div class="compress-bar mb-2">
-                <label for="img2pdfQuality" class="form-label mb-0">Compression</label>
-                <input type="range" id="img2pdfQuality" min="10" max="100" value="80">
-                <span id="img2pdfQualityVal">80%</span>
-              </div>
-              <div class="mb-3">
-                <label for="img2pdfLang" class="form-label">OCR Language</label>
-                <select id="img2pdfLang" class="form-select">
-                  <option value="none">No OCR</option>
-                  <option value="eng">English</option>
-                  <option value="hin">Hindi</option>
-                  <option value="urd">Urdu</option>
-                  <option value="chi">Chinese</option>
-                  <option value="jpn">Japanese</option>
-                  <option value="ara">Arabic</option>
-                  <option value="rus">Russian</option>
-                  <option value="fra">French</option>
-                </select>
-              </div>
-              <button type="button" class="btn btn-warning btn-convert w-100" id="img2pdfBtn">Convert & Compress</button>
-              <div class="spinner-border text-warning" role="status" id="img2pdfSpin"></div>
-            </form>
-            <div class="output-area" id="img2pdfOutput"></div>
-          </div>
-        </div>
-      </div>
-
-    </div>
-
-    <!-- Alerts/Errors -->
-    <div id="errorAlert" class="alert alert-danger d-none"></div>
-
-    <!-- Preview Modal -->
-    <div class="modal fade preview-modal" id="previewModal" tabindex="-1" aria-labelledby="previewModalLabel" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="previewModalLabel">File Preview</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body" id="previewContent"></div>
+            <div class="mb-3">
+              <label for="pdf2pdfLang" class="form-label">OCR Language</label>
+              <select id="pdf2pdfLang" class="form-select">
+                <option value="none">No OCR</option>
+                <option value="eng">English</option>
+                <option value="hin">Hindi</option>
+                <option value="urd">Urdu</option>
+                <option value="chi">Chinese</option>
+                <option value="jpn">Japanese</option>
+                <option value="ara">Arabic</option>
+                <option value="rus">Russian</option>
+                <option value="fra">French</option>
+              </select>
+            </div>
+            <button type="button" class="btn btn-primary btn-convert w-100" id="pdf2pdfBtn">Convert & Compress</button>
+            <div class="spinner-border text-primary" role="status" id="pdf2pdfSpin"></div>
+          </form>
+          <div class="output-area" id="pdf2pdfOutput"></div>
         </div>
       </div>
     </div>
+    <!-- Images to PDF/OCR -->
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-header" style="background: linear-gradient(90deg,#fffbc7 60%, #ffe4e9 100%); color: #b8850b;">
+          <i class="bi bi-images"></i> Images to PDF / OCR
+        </div>
+        <div class="card-body">
+          <div class="drag-card">
+            <div id="img2pdfDrop" class="drop-zone mb-2">
+              Drag & drop image files here<br>
+              <span>or <label for="img2pdfInput">browse</label></span>
+              <input type="file" id="img2pdfInput" multiple accept=".jpg,.jpeg,.png,.bmp,.tiff,.svg,.webp,.avif,.heic,.heif" style="display:none;">
+            </div>
+          </div>
+          <div class="file-list" id="img2pdfList"></div>
+          <form id="img2pdfForm">
+            <div class="compress-bar mb-2">
+              <label for="img2pdfQuality" class="form-label mb-0">Compression</label>
+              <input type="range" id="img2pdfQuality" min="10" max="100" value="80">
+              <span id="img2pdfQualityVal">80%</span>
+            </div>
+            <div class="mb-3">
+              <label for="img2pdfLang" class="form-label">OCR Language</label>
+              <select id="img2pdfLang" class="form-select">
+                <option value="none">No OCR</option>
+                <option value="eng">English</option>
+                <option value="hin">Hindi</option>
+                <option value="urd">Urdu</option>
+                <option value="chi">Chinese</option>
+                <option value="jpn">Japanese</option>
+                <option value="ara">Arabic</option>
+                <option value="rus">Russian</option>
+                <option value="fra">French</option>
+              </select>
+            </div>
+            <button type="button" class="btn btn-warning btn-convert w-100" id="img2pdfBtn">Convert & Compress</button>
+            <div class="spinner-border text-warning" role="status" id="img2pdfSpin"></div>
+          </form>
+          <div class="output-area" id="img2pdfOutput"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="errorAlert" class="alert alert-danger d-none"></div>
 
+  <!-- Preview Modal -->
+  <div class="modal fade preview-modal" id="previewModal" tabindex="-1" aria-labelledby="previewModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="previewModalLabel">File Preview</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" id="previewContent"></div>
+      </div>
+    </div>
   </div>
 
   <script src="api.js"></script>
