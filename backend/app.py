@@ -31,14 +31,14 @@ logger = logging.getLogger("killfile")
 # App
 app = FastAPI(
     title="Kill File Backend API",
-    description="Universal Files Converter & Compressor – PDF, Images, Office, OCR, Bulk ZIP",
+    description="Universal Files Converter & Compressor",
     version="0.3.0",
 )
 
 # CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["https://kill-file.vercel.app", "http://localhost:3000"],
+    allow_origins=["*"],  # frontend may be anywhere
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -53,7 +53,7 @@ templates = Jinja2Templates(directory="templates")
 
 @app.get("/", response_class=HTMLResponse)
 def root(request: Request):
-    """Friendly landing page"""
+    """Landing page"""
     return templates.TemplateResponse("index.html", {"request": request})
 
 # ------------------ Helper ------------------
@@ -64,7 +64,7 @@ def validate_file(filename, content, allowed_exts):
     if len(content) > MAX_FILE_SIZE:
         raise HTTPException(status_code=413, detail=f"File too large: {filename}")
 
-# ------------------ Existing Routes ------------------
+# ------------------ Existing API Routes ------------------
 @app.get("/health")
 def health():
     return {"status": "ok", "message": "API running"}
