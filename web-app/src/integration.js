@@ -1,202 +1,138 @@
-// Integration code to wire HTML buttons to backend API
+// integration.js
+// Connects HTML frontend to backend API (uses api.js)
 
-const API_BASE = "https://kill-file-1.onrender.com"; // <-- Render backend
+const SECTIONS = [
+  {
+    btnId: 'pdf2pdfBtn',
+    inputId: 'pdf2pdfInput',
+    outputId: 'pdf2pdfOutput',
+    spinId: 'pdf2pdfSpin',
+    endpoint: '/convert/pdf',
+    previewExt: ['pdf'],
+    extraFields: () => ({ compress: document.getElementById('pdf2pdfQuality').value,
+                          ocr_lang: document.getElementById('pdf2pdfLang').value })
+  },
+  {
+    btnId: 'pdf2imgBtn',
+    inputId: 'pdf2imgInput',
+    outputId: 'pdf2imgOutput',
+    spinId: 'pdf2imgSpin',
+    endpoint: '/convert/image',
+    previewExt: ['jpg','jpeg','png','bmp','tiff','svg','webp','avif','heic','heif'],
+    extraFields: () => ({ compress: document.getElementById('pdf2imgQuality').value,
+                          to_format: document.getElementById('pdf2imgFormat').value })
+  },
+  {
+    btnId: 'img2pdfBtn',
+    inputId: 'img2pdfInput',
+    outputId: 'img2pdfOutput',
+    spinId: 'img2pdfSpin',
+    endpoint: '/convert/pdf',
+    previewExt: ['pdf'],
+    extraFields: () => ({ compress: document.getElementById('img2pdfQuality').value,
+                          ocr_lang: document.getElementById('img2pdfLang').value })
+  },
+  {
+    btnId: 'img2imgBtn',
+    inputId: 'img2imgInput',
+    outputId: 'img2imgOutput',
+    spinId: 'img2imgSpin',
+    endpoint: '/convert/image',
+    previewExt: ['jpg','jpeg','png','bmp','tiff','svg','webp','avif','heic','heif'],
+    extraFields: () => ({ compress: document.getElementById('img2imgQuality').value,
+                          to_format: document.getElementById('img2imgFormat').value })
+  },
+  {
+    btnId: 'office2pdfBtn',
+    inputId: 'office2pdfInput',
+    outputId: 'office2pdfOutput',
+    spinId: 'office2pdfSpin',
+    endpoint: '/convert/office',
+    previewExt: ['pdf'],
+    extraFields: () => ({ compress: document.getElementById('office2pdfQuality').value,
+                          ocr_lang: document.getElementById('office2pdfLang').value })
+  }
+];
 
-// PDF to PDF/OCR
-document.getElementById('pdf2pdfBtn').addEventListener('click', async function() {
-    const files = Array.from(document.getElementById('pdf2pdfInput').files);
-    const compress = document.getElementById('pdf2pdfQuality').value;
-    const ocrLang = document.getElementById('pdf2pdfLang').value;
-    const spinner = document.getElementById('pdf2pdfSpin');
-    spinner.style.display = 'inline-block';
-    try {
-        let result = await uploadAndConvert(API_BASE + "/convert/pdf", files, {compress, ocr_lang: ocrLang});
-        spinner.style.display = 'none';
-        let html = result.results.map(r => `
-            <span class="file-pill output-pill">
-                <span>${r.filename}</span>
-                <span class="badge bg-success text-dark">${Math.round(r.compressed_size/1024)} KB</span>
-                <a class="btn btn-outline-success btn-sm btn-download" href="${r.download_url}" target="_blank">Download</a>
-                <button class="btn btn-outline-primary btn-sm btn-preview" onclick="showPreviewLink('${r.download_url}', '${r.filename}')">Preview</button>
-            </span>
-        `).join('');
-        if (result.results.length > 1) {
-            html += `<button class="btn btn-outline-primary btn-sm mt-2 download-zip-btn" onclick="bulkZipDownload('pdf', ${compress})">Download All as ZIP</button>`;
-        }
-        document.getElementById('pdf2pdfOutput').innerHTML = html;
-    } catch (err) {
-        spinner.style.display = 'none';
-        alert('API Error: ' + err.message);
-    }
-});
-
-// PDF to Image
-document.getElementById('pdf2imgBtn').addEventListener('click', async function() {
-    const files = Array.from(document.getElementById('pdf2imgInput').files);
-    const toFormat = document.getElementById('pdf2imgFormat').value;
-    const compress = document.getElementById('pdf2imgQuality').value;
-    const spinner = document.getElementById('pdf2imgSpin');
-    spinner.style.display = 'inline-block';
-    try {
-        let result = await uploadAndConvert(API_BASE + "/convert/image", files, {to_format: toFormat, compress});
-        spinner.style.display = 'none';
-        let html = result.results.map(r => `
-            <span class="file-pill output-pill">
-                <span>${r.filename}</span>
-                <span class="badge bg-success text-dark">${Math.round(r.compressed_size/1024)} KB</span>
-                <a class="btn btn-outline-success btn-sm btn-download" href="${r.download_url}" target="_blank">Download</a>
-                <button class="btn btn-outline-primary btn-sm btn-preview" onclick="showPreviewLink('${r.download_url}', '${r.filename}')">Preview</button>
-            </span>
-        `).join('');
-        if (result.results.length > 1) {
-            html += `<button class="btn btn-outline-primary btn-sm mt-2 download-zip-btn" onclick="bulkZipDownload('image', ${compress})">Download All as ZIP</button>`;
-        }
-        document.getElementById('pdf2imgOutput').innerHTML = html;
-    } catch (err) {
-        spinner.style.display = 'none';
-        alert('API Error: ' + err.message);
-    }
-});
-
-// Images to PDF/OCR
-document.getElementById('img2pdfBtn').addEventListener('click', async function() {
-    const files = Array.from(document.getElementById('img2pdfInput').files);
-    const compress = document.getElementById('img2pdfQuality').value;
-    const ocrLang = document.getElementById('img2pdfLang').value;
-    const spinner = document.getElementById('img2pdfSpin');
-    spinner.style.display = 'inline-block';
-    try {
-        let result = await uploadAndConvert(API_BASE + "/convert/pdf", files, {compress, ocr_lang: ocrLang});
-        spinner.style.display = 'none';
-        let html = result.results.map(r => `
-            <span class="file-pill output-pill">
-                <span>${r.filename}</span>
-                <span class="badge bg-success text-dark">${Math.round(r.compressed_size/1024)} KB</span>
-                <a class="btn btn-outline-success btn-sm btn-download" href="${r.download_url}" target="_blank">Download</a>
-                <button class="btn btn-outline-primary btn-sm btn-preview" onclick="showPreviewLink('${r.download_url}', '${r.filename}')">Preview</button>
-            </span>
-        `).join('');
-        if (result.results.length > 1) {
-            html += `<button class="btn btn-outline-primary btn-sm mt-2 download-zip-btn" onclick="bulkZipDownload('pdf', ${compress})">Download All as ZIP</button>`;
-        }
-        document.getElementById('img2pdfOutput').innerHTML = html;
-    } catch (err) {
-        spinner.style.display = 'none';
-        alert('API Error: ' + err.message);
-    }
-});
-
-// Images to Images
-document.getElementById('img2imgBtn').addEventListener('click', async function() {
-    const files = Array.from(document.getElementById('img2imgInput').files);
-    const toFormat = document.getElementById('img2imgFormat').value;
-    const compress = document.getElementById('img2imgQuality').value;
-    const spinner = document.getElementById('img2imgSpin');
-    spinner.style.display = 'inline-block';
-    try {
-        let result = await uploadAndConvert(API_BASE + "/convert/image", files, {to_format: toFormat, compress});
-        spinner.style.display = 'none';
-        let html = result.results.map(r => `
-            <span class="file-pill output-pill">
-                <span>${r.filename}</span>
-                <span class="badge bg-success text-dark">${Math.round(r.compressed_size/1024)} KB</span>
-                <a class="btn btn-outline-success btn-sm btn-download" href="${r.download_url}" target="_blank">Download</a>
-                <button class="btn btn-outline-primary btn-sm btn-preview" onclick="showPreviewLink('${r.download_url}', '${r.filename}')">Preview</button>
-            </span>
-        `).join('');
-        if (result.results.length > 1) {
-            html += `<button class="btn btn-outline-primary btn-sm mt-2 download-zip-btn" onclick="bulkZipDownload('image', ${compress})">Download All as ZIP</button>`;
-        }
-        document.getElementById('img2imgOutput').innerHTML = html;
-    } catch (err) {
-        spinner.style.display = 'none';
-        alert('API Error: ' + err.message);
-    }
-});
-
-// Office to PDF/OCR
-document.getElementById('office2pdfBtn').addEventListener('click', async function() {
-    const files = Array.from(document.getElementById('office2pdfInput').files);
-    const compress = document.getElementById('office2pdfQuality').value;
-    const ocrLang = document.getElementById('office2pdfLang').value;
-    const spinner = document.getElementById('office2pdfSpin');
-    spinner.style.display = 'inline-block';
-    try {
-        let result = await uploadAndConvert(API_BASE + "/convert/office", files, {compress, ocr_lang: ocrLang});
-        spinner.style.display = 'none';
-        let html = result.results.map(r => `
-            <span class="file-pill output-pill">
-                <span>${r.filename}</span>
-                <span class="badge bg-success text-dark">${Math.round(r.compressed_size/1024)} KB</span>
-                <a class="btn btn-outline-success btn-sm btn-download" href="${r.download_url}" target="_blank">Download</a>
-                <button class="btn btn-outline-primary btn-sm btn-preview" onclick="showPreviewLink('${r.download_url}', '${r.filename}')">Preview</button>
-            </span>
-        `).join('');
-        if (result.results.length > 1) {
-            html += `<button class="btn btn-outline-primary btn-sm mt-2 download-zip-btn" onclick="bulkZipDownload('office', ${compress})">Download All as ZIP</button>`;
-        }
-        document.getElementById('office2pdfOutput').innerHTML = html;
-    } catch (err) {
-        spinner.style.display = 'none';
-        alert('API Error: ' + err.message);
-    }
-});
-
-// Bulk ZIP download handler
-function bulkZipDownload(type, compress) {
-    let files = [];
-    switch(type) {
-        case 'pdf': files = [...document.getElementById('pdf2pdfInput').files]; break;
-        case 'image': files = [...document.getElementById('pdf2imgInput').files, ...document.getElementById('img2imgInput').files]; break;
-        case 'office': files = [...document.getElementById('office2pdfInput').files]; break;
-    }
-    uploadAndConvertZip(API_BASE + "/convert/zip", files, type, compress)
-        .then(blob => {
-            const a = document.createElement('a');
-            a.href = URL.createObjectURL(blob);
-            a.download = "converted_files.zip";
-            a.click();
-        })
-        .catch(err => alert('ZIP API Error: ' + err.message));
+// Helper to create output pill HTML
+function createFilePill(fileData, previewExt) {
+  const ext = fileData.filename.split('.').pop().toLowerCase();
+  return `
+    <span class="file-pill output-pill">
+      <span>${fileData.filename}</span>
+      <span class="badge bg-success text-dark">${Math.round(fileData.compressed_size/1024)} KB</span>
+      <a class="btn btn-outline-success btn-sm btn-download" href="${fileData.download_url}" target="_blank">Download</a>
+      ${previewExt.includes(ext) ? `<button class="btn btn-outline-primary btn-sm btn-preview" onclick="showPreviewLink('${fileData.download_url}', '${fileData.filename}')">Preview</button>` : ''}
+    </span>
+  `;
 }
 
-// Preview modal for download link (unchanged)
+// Main setup function
+SECTIONS.forEach(sec => {
+  const btn = document.getElementById(sec.btnId);
+  const spinner = document.getElementById(sec.spinId);
+  const output = document.getElementById(sec.outputId);
+  const input = document.getElementById(sec.inputId);
+
+  btn.addEventListener('click', async () => {
+    const files = Array.from(input.files);
+    if (!files.length) return alert('Please select at least one file.');
+    spinner.style.display = 'inline-block';
+    btn.disabled = true;
+    output.innerHTML = '';
+
+    try {
+      const formFields = sec.extraFields();
+      const result = await uploadAndConvert(API_BASE + sec.endpoint, files, formFields);
+
+      let html = result.results.map(r => createFilePill(r, sec.previewExt)).join('');
+
+      if (result.results.length > 1) {
+        html += `<button class="btn btn-outline-primary btn-sm mt-2 download-zip-btn" onclick="bulkZipDownload('${sec.endpoint}', ${JSON.stringify(formFields)})">Download All as ZIP</button>`;
+      }
+
+      output.innerHTML = html;
+    } catch (err) {
+      alert('API Error: ' + err.message);
+    } finally {
+      spinner.style.display = 'none';
+      btn.disabled = false;
+    }
+  });
+});
+
+// Bulk ZIP download helper
+async function bulkZipDownload(endpoint, formFields) {
+  let files = [];
+  // Collect all selected files from all sections
+  SECTIONS.forEach(sec => {
+    const input = document.getElementById(sec.inputId);
+    if (input.files.length) files.push(...Array.from(input.files));
+  });
+  if (!files.length) return alert('No files selected for ZIP download.');
+
+  try {
+    const blob = await uploadAndConvertZip(API_BASE + '/convert/zip', files, formFields.convert_type || 'auto', formFields.compress || 80);
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = "converted_files.zip";
+    a.click();
+  } catch (err) {
+    alert('ZIP API Error: ' + err.message);
+  }
+}
+
+// Preview modal
 window.showPreviewLink = function(url, name) {
-    let ext = name.split('.').pop().toLowerCase();
-    let previewHtml = '';
-    if (['jpg','jpeg','png','bmp','svg','webp','avif','heic','heif'].includes(ext)) {
-        previewHtml = `<img src="${url}" class="preview-image mb-2"><div>${name}</div>`;
-    } else if (ext === 'pdf') {
-        previewHtml = `<iframe src="${url}" class="preview-pdf"></iframe><div>${name}</div>`;
-    } else {
-        previewHtml = `<div>No preview available for ${ext.toUpperCase()}.</div>`;
-    }
-    document.getElementById('previewContent').innerHTML = previewHtml;
-    const modal = new bootstrap.Modal(document.getElementById('previewModal'));
-    modal.show();
+  let ext = name.split('.').pop().toLowerCase();
+  let html = '';
+  if (['jpg','jpeg','png','bmp','svg','webp','avif','heic','heif'].includes(ext)) {
+    html = `<img src="${url}" class="preview-image mb-2"><div>${name}</div>`;
+  } else if (ext === 'pdf') {
+    html = `<iframe src="${url}" class="preview-pdf"></iframe><div>${name}</div>`;
+  } else {
+    html = `<div>No preview available for ${ext.toUpperCase()}.</div>`;
+  }
+  document.getElementById('previewContent').innerHTML = html;
+  new bootstrap.Modal(document.getElementById('previewModal')).show();
 };
-
-// --- API Helper functions ---
-async function uploadAndConvert(endpoint, files, formFields = {}) {
-  const formData = new FormData();
-  files.forEach(f => formData.append('files', f));
-  Object.entries(formFields).forEach(([key, val]) => formData.append(key, val));
-  const resp = await fetch(endpoint, {
-    method: "POST",
-    body: formData
-  });
-  if (!resp.ok) throw new Error(await resp.text());
-  return await resp.json();
-}
-async function uploadAndConvertZip(endpoint, files, type, compress) {
-  const formData = new FormData();
-  files.forEach(f => formData.append('files', f));
-  formData.append('type', type);
-  formData.append('compress', compress);
-  const resp = await fetch(endpoint, {
-    method: "POST",
-    body: formData
-  });
-  if (!resp.ok) throw new Error(await resp.text());
-  return await resp.blob();
-}
