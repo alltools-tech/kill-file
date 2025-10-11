@@ -3,97 +3,22 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Kill File â€“ Universal Files Converter & Compressor</title>
+  <title>Kill File – Universal Files Converter & Compressor</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="../public/style.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
   <style>
-    /* old design styles preserved from previous version */
     body { background: linear-gradient(135deg, #f3f7fa 0%, #e9ebf7 100%); }
-    .main-title {
-      font-size: 3.3rem;
-      font-weight: 800;
-      letter-spacing: 1.5px;
-      color: #23296b;
-      text-shadow: 1px 3px 20px #a8b6ff88;
-      margin-bottom: 0.35em;
-      font-family: 'Segoe UI', 'Roboto', Arial, sans-serif;
-    }
-    .subtitle-card {
-      background: linear-gradient(90deg, #23296b 60%, #21d4fd 100%);
-      color: #fff;
-      border-radius: 16px;
-      box-shadow: 0 2px 20px #23296b22;
-      margin: 0 auto 2.4em auto;
-      max-width: 420px;
-      padding: 1.2em 2em;
-      text-align: center;
-      font-size: 1.7rem;
-      font-weight: 600;
-      letter-spacing: 0.8px;
-    }
-    .card {
-      border-radius: 18px;
-      box-shadow: 0 2px 16px #23296b12;
-      margin-bottom: 2rem;
-      border: none;
-      overflow: hidden;
-      background: #fff;
-    }
-    .card-header {
-      font-size: 1.18rem;
-      font-weight: 600;
-      letter-spacing: 0.4px;
-      border-bottom: 1px solid #e2e8f0;
-      border-radius: 18px 18px 0 0;
-      padding: 1em 1.2em;
-    }
-    .drag-card {
-      background: linear-gradient(90deg, #e9ecf7 60%, #d9faff 100%);
-      box-shadow: 0 2px 8px #21d4fd22;
-      border-radius: 16px;
-      margin-bottom: 1em;
-      padding: 1em 0.5em;
-    }
-    .drop-zone {
-      border: 2.5px dashed #21d4fd;
-      border-radius: 14px;
-      background: #f4f8ff;
-      padding: 2.4em 1em;
-      text-align: center;
-      color: #23296b;
-      font-size: 1.13em;
-      cursor: pointer;
-      font-weight: 500;
-      transition: background 0.22s, border-color 0.22s;
-      margin: 0.7em auto 0.5em auto;
-      position: relative;
-    }
-    .drop-zone.dragover {
-      background: #e3f2fd;
-      border-color: #21d4fd;
-    }
-    .drop-zone label {
-      color: #21d4fd;
-      text-decoration: underline;
-      font-weight: 600;
-      cursor: pointer;
-    }
-    .file-list {
-      margin-bottom: 0.5rem;
-      font-size: 1em;
-    }
-    .file-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      background: #eef6ff;
-      border-radius: 20px;
-      padding: 5px 14px;
-      margin: 4px 2px;
-      font-size: 1em;
-      box-shadow: 0 1px 8px #21d4fd22;
-    }
+    .main-title { font-size: 3.3rem; font-weight: 800; letter-spacing: 1.5px; color: #23296b; text-shadow: 1px 3px 20px #a8b6ff88; margin-bottom: 0.35em; font-family: 'Segoe UI', 'Roboto', Arial, sans-serif; }
+    .subtitle-card { background: linear-gradient(90deg, #23296b 60%, #21d4fd 100%); color: #fff; border-radius: 16px; box-shadow: 0 2px 20px #23296b22; margin: 0 auto 2.4em auto; max-width: 420px; padding: 1.2em 2em; text-align: center; font-size: 1.7rem; font-weight: 600; letter-spacing: 0.8px; }
+    .card { border-radius: 18px; box-shadow: 0 2px 16px #23296b12; margin-bottom: 2rem; border: none; overflow: hidden; background: #fff; }
+    .card-header { font-size: 1.18rem; font-weight: 600; letter-spacing: 0.4px; border-bottom: 1px solid #e2e8f0; border-radius: 18px 18px 0 0; padding: 1em 1.2em; }
+    .drag-card { background: linear-gradient(90deg, #e9ecf7 60%, #d9faff 100%); box-shadow: 0 2px 8px #21d4fd22; border-radius: 16px; margin-bottom: 1em; padding: 1em 0.5em; }
+    .drop-zone { border: 2.5px dashed #21d4fd; border-radius: 14px; background: #f4f8ff; padding: 2.4em 1em; text-align: center; color: #23296b; font-size: 1.13em; cursor: pointer; font-weight: 500; transition: background 0.22s, border-color 0.22s; margin: 0.7em auto 0.5em auto; position: relative; }
+    .drop-zone.dragover { background: #e3f2fd; border-color: #21d4fd; }
+    .drop-zone label { color: #21d4fd; text-decoration: underline; font-weight: 600; cursor: pointer; }
+    .file-list { margin-bottom: 0.5rem; font-size: 1em; }
+    .file-pill { display: inline-flex; align-items: center; gap: 8px; background: #eef6ff; border-radius: 20px; padding: 5px 14px; margin: 4px 2px; font-size: 1em; box-shadow: 0 1px 8px #21d4fd22; }
     .file-pill .badge { font-size: 0.85em; }
     .file-pill input { border: none; background: transparent; width: 120px; font-size: 1em; }
     .output-pill { background: #e6f5ea; }
@@ -105,20 +30,8 @@
     .output-area .btn { margin-top: 0.5rem; margin-right: 0.5rem; }
     .download-zip-btn { margin-right: 0.5rem; }
     .compress-bar label { min-width: 110px; }
-    .spinner-border {
-      display: none;
-      vertical-align: middle;
-      margin-left: 0.5rem;
-      position: relative;
-      top: 2px;
-    }
-    @media (max-width: 600px) {
-      .main-title { font-size: 2.1rem; }
-      .subtitle-card { font-size: 1.09rem; padding:0.6em 1em;}
-      .container { padding: 0 2px; }
-      .card-header { font-size: 1rem; padding:0.7em 0.9em;}
-      .drop-zone { font-size: 1em; padding: 1em 0.5em;}
-    }
+    .spinner-border { display: none; vertical-align: middle; margin-left: 0.5rem; position: relative; top: 2px; }
+    @media (max-width: 600px) { .main-title { font-size: 2.1rem; } .subtitle-card { font-size: 1.09rem; padding:0.6em 1em;} .container { padding: 0 2px; } .card-header { font-size: 1rem; padding:0.7em 0.9em;} .drop-zone { font-size: 1em; padding: 1em 0.5em;} }
   </style>
 </head>
 <body>
@@ -172,49 +85,6 @@
         </div>
       </div>
 
-      <!-- PDF to Image -->
-      <div class="col-md-6">
-        <div class="card">
-          <div class="card-header" style="background: linear-gradient(90deg,#d0f0e7 60%, #ffe9e9 100%); color: #2b7a4b;">
-            <i class="bi bi-file-earmark-image"></i> PDF to Image
-          </div>
-          <div class="card-body">
-            <div class="drag-card">
-              <div id="pdf2imgDrop" class="drop-zone mb-2">
-                Drag & drop PDF files here<br>
-                <span>or <label for="pdf2imgInput">browse</label></span>
-                <input type="file" id="pdf2imgInput" multiple accept=".pdf" style="display:none;">
-              </div>
-            </div>
-            <div class="file-list" id="pdf2imgList"></div>
-            <form id="pdf2imgForm">
-              <div class="mb-3">
-                <label for="pdf2imgFormat" class="form-label">To Image Format</label>
-                <select id="pdf2imgFormat" class="form-select">
-                  <option value="jpg">JPG</option>
-                  <option value="png">PNG</option>
-                  <option value="bmp">BMP</option>
-                  <option value="tiff">TIFF</option>
-                  <option value="svg">SVG</option>
-                  <option value="webp">WebP</option>
-                  <option value="avif">AVIF</option>
-                  <option value="heic">HEIC</option>
-                  <option value="heif">HEIF</option>
-                </select>
-              </div>
-              <div class="compress-bar mb-2">
-                <label for="pdf2imgQuality" class="form-label mb-0">Compression</label>
-                <input type="range" id="pdf2imgQuality" min="10" max="100" value="80">
-                <span id="pdf2imgQualityVal">80%</span>
-              </div>
-              <button type="button" class="btn btn-success btn-convert w-100" id="pdf2imgBtn">Convert & Compress</button>
-              <div class="spinner-border text-success" role="status" id="pdf2imgSpin"></div>
-            </form>
-            <div class="output-area" id="pdf2imgOutput"></div>
-          </div>
-        </div>
-      </div>
-
       <!-- Images to PDF/OCR -->
       <div class="col-md-6">
         <div class="card">
@@ -258,137 +128,7 @@
         </div>
       </div>
 
-      <!-- Images to Images -->
-      <div class="col-md-6">
-        <div class="card">
-          <div class="card-header" style="background: linear-gradient(90deg,#e7f6ff 60%, #eae7ff 100%); color: #2097d4;">
-            <i class="bi bi-image"></i> Images to Images
-          </div>
-          <div class="card-body">
-            <div class="drag-card">
-              <div id="img2imgDrop" class="drop-zone mb-2">
-                Drag & drop image files here<br>
-                <span>or <label for="img2imgInput">browse</label></span>
-                <input type="file" id="img2imgInput" multiple accept=".jpg,.jpeg,.png,.bmp,.tiff,.svg,.webp,.avif,.heic,.heif" style="display:none;">
-              </div>
-            </div>
-            <div class="file-list" id="img2imgList"></div>
-            <form id="img2imgForm">
-              <div class="mb-3">
-                <label for="img2imgFormat" class="form-label">To Image Format</label>
-                <select id="img2imgFormat" class="form-select">
-                  <option value="jpg">JPG</option>
-                  <option value="png">PNG</option>
-                  <option value="bmp">BMP</option>
-                  <option value="tiff">TIFF</option>
-                  <option value="svg">SVG</option>
-                  <option value="webp">WebP</option>
-                  <option value="avif">AVIF</option>
-                  <option value="heic">HEIC</option>
-                  <option value="heif">HEIF</option>
-                </select>
-              </div>
-              <div class="compress-bar mb-2">
-                <label for="img2imgQuality" class="form-label mb-0">Compression</label>
-                <input type="range" id="img2imgQuality" min="10" max="100" value="80">
-                <span id="img2imgQualityVal">80%</span>
-              </div>
-              <button type="button" class="btn btn-info btn-convert w-100 text-white" id="img2imgBtn">Convert & Compress</button>
-              <div class="spinner-border text-info" role="status" id="img2imgSpin"></div>
-            </form>
-            <div class="output-area" id="img2imgOutput"></div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Office to PDF/OCR -->
-      <div class="col-md-6">
-        <div class="card">
-          <div class="card-header" style="background: linear-gradient(90deg,#f1f1f1 60%, #f7e8ff 100%); color: #6c3bbc;">
-            <i class="bi bi-file-earmark-richtext"></i> Office Files to PDF / OCR
-          </div>
-          <div class="card-body">
-            <div class="drag-card">
-              <div id="office2pdfDrop" class="drop-zone mb-2">
-                Drag & drop office files here<br>
-                <span>or <label for="office2pdfInput">browse</label></span>
-                <input type="file" id="office2pdfInput" multiple accept=".doc,.docx,.xls,.xlsx,.ppt,.pptx,.csv,.txt" style="display:none;">
-              </div>
-            </div>
-            <div class="file-list" id="office2pdfList"></div>
-            <form id="office2pdfForm">
-              <div class="compress-bar mb-2">
-                <label for="office2pdfQuality" class="form-label mb-0">Compression</label>
-                <input type="range" id="office2pdfQuality" min="10" max="100" value="80">
-                <span id="office2pdfQualityVal">80%</span>
-              </div>
-              <div class="mb-3">
-                <label for="office2pdfLang" class="form-label">OCR Language</label>
-                <select id="office2pdfLang" class="form-select">
-                  <option value="none">No OCR</option>
-                  <option value="eng">English</option>
-                  <option value="hin">Hindi</option>
-                  <option value="urd">Urdu</option>
-                  <option value="chi">Chinese</option>
-                  <option value="jpn">Japanese</option>
-                  <option value="ara">Arabic</option>
-                  <option value="rus">Russian</option>
-                  <option value="fra">French</option>
-                </select>
-              </div>
-              <button type="button" class="btn btn-secondary btn-convert w-100" id="office2pdfBtn">Convert & Compress</button>
-              <div class="spinner-border text-secondary" role="status" id="office2pdfSpin"></div>
-            </form>
-            <div class="output-area" id="office2pdfOutput"></div>
-          </div>
-        </div>
-      </div>
-
     </div>
-
-    <!-- Help/FAQ & Contact Cards -->
-    <div class="row mb-4">
-      <div class="col-md-6">
-        <div class="card h-100">
-          <div class="card-header" style="background: linear-gradient(90deg,#e9ecf7 60%, #d9faff 100%); color: #23296b;">
-            <i class="bi bi-question-circle-fill"></i> Help & FAQ
-          </div>
-          <div class="card-body">
-            <ul class="list-unstyled">
-              <li><b>Q:</b> Which files can I convert?<br>
-                  <b>A:</b> PDF, images (JPG, PNG, SVG, etc), Office files (DOCX, XLSX, PPTX, TXT, etc).</li>
-              <li class="mt-2"><b>Q:</b> Maximum file size?<br>
-                  <b>A:</b> 12 MB per file.</li>
-              <li class="mt-2"><b>Q:</b> How to bulk download converted files?<br>
-                  <b>A:</b> Use the "Download All as ZIP" button after conversion.</li>
-              <li class="mt-2"><b>Q:</b> Which languages are supported for OCR?<br>
-                  <b>A:</b> English, Hindi, Urdu, Chinese, Japanese, Arabic, Russian, French.</li>
-              <li class="mt-2"><b>Q:</b> My conversion fails! What should I do?<br>
-                  <b>A:</b> Check file type/size, refresh page, or contact support.</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-6">
-        <div class="card h-100">
-          <div class="card-header" style="background: linear-gradient(90deg,#f7e8ff 60%, #f1f1f1 100%); color: #6c3bbc;">
-            <i class="bi bi-envelope-at-fill"></i> Contact & Support
-          </div>
-          <div class="card-body">
-            <p>
-              <b>Email:</b> <a href="mailto:support@killfile.io">support@killfile.io</a><br>
-              <b>GitHub:</b> <a href="https://github.com/alltools-tech/killfile" target="_blank">alltools-tech/killfile</a><br>
-              <b>Telegram:</b> <a href="https://t.me/killfile_support" target="_blank">@killfile_support</a>
-            </p>
-            <p>
-              For bugs, suggestions or feature requests,<br>
-              create an issue on GitHub or email us.
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
-    <!-- End Help/FAQ & Contact Cards -->
 
     <!-- Alerts/Errors -->
     <div id="errorAlert" class="alert alert-danger d-none"></div>
@@ -406,170 +146,8 @@
       </div>
     </div>
 
-    <div class="footer text-center mt-3 mb-2">
-      <span class="text-muted">Â© 2025 Kill File Â· Free & Open Source Â· International OCR Â· ZIP Bulk Download</span>
-    </div>
   </div>
 
-  <script>
-    // Helper functions
-    function formatSize(bytes) {
-      if (bytes < 1024) return bytes + ' B';
-      if (bytes < 1024 * 1024) return (bytes/1024).toFixed(1) + ' KB';
-      return (bytes/1024/1024).toFixed(2) + ' MB';
-    }
-    function getExt(name) {
-      return name.split('.').pop();
-    }
-
-    // File selection bug fix: don't clear files unless new files selected
-    function setupFileSection(section, allowedPreview=['pdf','jpg','jpeg','png','bmp','svg','webp','avif','heic','heif']) {
-      const dropZone = document.getElementById(section + 'Drop');
-      const fileInput = document.getElementById(section + 'Input');
-      const fileList = document.getElementById(section + 'List');
-      let files = [];
-
-      dropZone.addEventListener('click', () => fileInput.click());
-      dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.classList.add('dragover'); });
-      dropZone.addEventListener('dragleave', () => dropZone.classList.remove('dragover'));
-      dropZone.addEventListener('drop', (e) => {
-        e.preventDefault(); dropZone.classList.remove('dragover');
-        handleFiles(e.dataTransfer.files);
-      });
-      fileInput.addEventListener('change', () => {
-        if (fileInput.files.length > 0) handleFiles(fileInput.files);
-      });
-
-      function handleFiles(selectedFiles) {
-        files = Array.from(selectedFiles);
-        fileList.innerHTML = files.map(f =>
-          `<span class="file-pill">
-              <i class="bi bi-file-earmark"></i>
-              <span>${f.name}</span>
-              <span class="badge bg-light text-dark">${getExt(f.name).toUpperCase()}</span>
-              <span class="badge bg-info text-dark">${formatSize(f.size)}</span>
-          </span>`
-        ).join('');
-      }
-      // For ZIP download and preview, return files array
-      return () => files;
-    }
-
-    // Attach file handler for each section
-    const getPdf2pdfFiles = setupFileSection('pdf2pdf', ['pdf']);
-    const getPdf2imgFiles = setupFileSection('pdf2img', ['jpg','jpeg','png','bmp','tiff','svg','webp','avif','heic','heif']);
-    const getImg2pdfFiles = setupFileSection('img2pdf', ['pdf']);
-    const getImg2imgFiles = setupFileSection('img2img', ['jpg','jpeg','png','bmp','tiff','svg','webp','avif','heic','heif']);
-    const getOffice2pdfFiles = setupFileSection('office2pdf', ['pdf']);
-
-    // Compression slider sync
-    function setupQualitySlider(sliderId, valId) {
-      const slider = document.getElementById(sliderId);
-      const val = document.getElementById(valId);
-      slider.addEventListener('input', () => { val.textContent = slider.value + '%'; });
-    }
-    setupQualitySlider('pdf2pdfQuality', 'pdf2pdfQualityVal');
-    setupQualitySlider('pdf2imgQuality', 'pdf2imgQualityVal');
-    setupQualitySlider('img2pdfQuality', 'img2pdfQualityVal');
-    setupQualitySlider('img2imgQuality', 'img2imgQualityVal');
-    setupQualitySlider('office2pdfQuality', 'office2pdfQualityVal');
-
-    // Error alert utility
-    function showError(msg) {
-      const alert = document.getElementById('errorAlert');
-      alert.textContent = msg;
-      alert.classList.remove('d-none');
-      setTimeout(() => alert.classList.add('d-none'), 3500);
-    }
-
-    // Conversion stub â€” will later use backend/API; demo output for now
-    function setupConvertButton(btnId, spinId, getFilesFn, outputId, allowedPreview=['pdf','jpg','jpeg','png','bmp','svg','webp','avif','heic','heif']) {
-      const btn = document.getElementById(btnId);
-      const spin = document.getElementById(spinId);
-      const output = document.getElementById(outputId);
-
-      btn.addEventListener('click', () => {
-        const files = getFilesFn();
-        if (!files.length) { showError('Please select at least one file.'); return; }
-        spin.style.display = 'inline-block'; // Show spinner
-        btn.disabled = true;
-        output.innerHTML = '';
-        setTimeout(() => {
-          spin.style.display = 'none'; // Hide spinner after "processing"
-          btn.disabled = false;
-          output.innerHTML = files.map((f, idx) => {
-            const ext = getExt(f.name);
-            // Simulate new file size (compressed)
-            const newSize = Math.max(Math.round(f.size * 0.7), 1200 + idx * 1100);
-            // Editable name field
-            const outNameId = outputId + '_name_' + idx;
-            return `
-              <span class="file-pill output-pill">
-                <i class="bi bi-file-earmark-arrow-down"></i>
-                <input class="edit-name-input" id="${outNameId}" value="${f.name.replace(/\.[^/.]+$/, '')}_out.${ext}" />
-                <span class="badge bg-light text-dark">${ext.toUpperCase()}</span>
-                <span class="badge bg-success text-dark">${formatSize(newSize)}</span>
-                <button class="btn btn-outline-success btn-sm btn-download" onclick="downloadDemoFile('${outNameId}', '${ext}', ${newSize})">Download</button>
-                ${allowedPreview.includes(ext) ? `<button class="btn btn-outline-primary btn-sm btn-preview" onclick="showPreview('${ext}', ${idx}, '${outNameId}')">Preview</button>` : ''}
-              </span>
-            `;
-          }).join('');
-
-          // ZIP download button for bulk
-          if (files.length > 1) {
-            output.innerHTML += `<button class="btn btn-outline-primary btn-sm mt-2 download-zip-btn" onclick="downloadZipDemo('${outputId}', ${files.length})">Download All as ZIP</button>`;
-          }
-        }, 1700);
-      });
-    }
-
-    // Dummy download function (to be replaced with real download)
-    window.downloadDemoFile = function(nameId, ext, size) {
-      const name = document.getElementById(nameId).value;
-      const blob = new Blob(["Demo File Content"], {type: ext==='pdf'?'application/pdf':'application/octet-stream'});
-      const a = document.createElement('a');
-      a.href = URL.createObjectURL(blob);
-      a.download = name;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-    };
-
-    // Dummy bulk ZIP download
-    window.downloadZipDemo = function(outputId, count) {
-      const zipName = "converted-files.zip";
-      const blob = new Blob(["Demo ZIP Content"], {type: "application/zip"});
-      const a = document.createElement('a');
-      a.href = URL.createObjectURL(blob);
-      a.download = zipName;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-    };
-
-    // Dummy preview (image/pdf demo)
-    window.showPreview = function(ext, idx, nameId) {
-      const name = document.getElementById(nameId).value;
-      let previewHtml = '';
-      if (['jpg','jpeg','png','bmp','svg','webp','avif','heic','heif'].includes(ext)) {
-        previewHtml = `<img src="https://via.placeholder.com/420x300.png?text=Preview+${ext.toUpperCase()}" class="preview-image mb-2"><div>${name}</div>`;
-      } else if (ext === 'pdf') {
-        previewHtml = `<iframe src="https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf" class="preview-pdf"></iframe><div>${name}</div>`;
-      } else {
-        previewHtml = `<div>No preview available for ${ext.toUpperCase()}.</div>`;
-      }
-      document.getElementById('previewContent').innerHTML = previewHtml;
-      const modal = new bootstrap.Modal(document.getElementById('previewModal'));
-      modal.show();
-    };
-
-    // Set up each section's convert button
-    setupConvertButton('pdf2pdfBtn', 'pdf2pdfSpin', getPdf2pdfFiles, 'pdf2pdfOutput', ['pdf']);
-    setupConvertButton('pdf2imgBtn', 'pdf2imgSpin', getPdf2imgFiles, 'pdf2imgOutput', ['jpg','jpeg','png','bmp','tiff','svg','webp','avif','heic','heif']);
-    setupConvertButton('img2pdfBtn', 'img2pdfSpin', getImg2pdfFiles, 'img2pdfOutput', ['pdf']);
-    setupConvertButton('img2imgBtn', 'img2imgSpin', getImg2imgFiles, 'img2imgOutput', ['jpg','jpeg','png','bmp','tiff','svg','webp','avif','heic','heif']);
-    setupConvertButton('office2pdfBtn', 'office2pdfSpin', getOffice2pdfFiles, 'office2pdfOutput', ['pdf']);
-  </script>
   <script src="api.js"></script>
   <script src="integration.js"></script>
 </body>
