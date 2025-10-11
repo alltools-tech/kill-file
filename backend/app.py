@@ -3,9 +3,11 @@ import io
 import zipfile
 import os
 from typing import List, Optional
-from fastapi import FastAPI, UploadFile, File, Form, HTTPException
+from fastapi import FastAPI, UploadFile, File, Form, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse, StreamingResponse
+from fastapi.responses import JSONResponse, StreamingResponse, HTMLResponse
+from fastapi.staticfiles import StaticFiles
+from fastapi.templating import Jinja2Templates
 
 from backend.utils.pdf_utils import pdf_to_pdf
 from backend.utils.image_utils import image_to_image
@@ -45,7 +47,16 @@ app.add_middleware(
 # Output folder
 os.makedirs("converted", exist_ok=True)
 
-# ------------------ Helpers ------------------
+# ------------------ Static & Templates ------------------
+app.mount("/static", StaticFiles(directory="static"), name="static")
+templates = Jinja2Templates(directory="templates")
+
+@app.get("/", response_class=HTMLResponse)
+def root(request: Request):
+    """Friendly landing page"""
+    return templates.TemplateResponse("index.html", {"request": request})
+
+# ------------------ Helper ------------------
 def validate_file(filename, content, allowed_exts):
     ext = filename.lower().rsplit('.', 1)[-1]
     if ext not in allowed_exts:
@@ -53,7 +64,7 @@ def validate_file(filename, content, allowed_exts):
     if len(content) > MAX_FILE_SIZE:
         raise HTTPException(status_code=413, detail=f"File too large: {filename}")
 
-# ------------------ Routes ------------------
+# ------------------ Existing Routes ------------------
 @app.get("/health")
 def health():
     return {"status": "ok", "message": "API running"}
